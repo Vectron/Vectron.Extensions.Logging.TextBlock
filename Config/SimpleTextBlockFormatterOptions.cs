@@ -1,6 +1,6 @@
 ﻿namespace VectronsLibrary.TextBlockLogger
 {
-    public class TextBlockLoggerOptions
+    public class SimpleTextBlockFormatterOptions : TextBlockFormatterOptions
     {
         public bool DisableColors
         {
@@ -8,16 +8,10 @@
             set;
         }
 
-        public bool IncludeScopes
+        public bool SingleLine
         {
             get;
-            set;
-        }
-
-        public int MaxMessages
-        {
-            get;
-            set;
+            internal set;
         }
     }
 }

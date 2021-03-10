@@ -1,13 +1,18 @@
-﻿using System.Windows.Media;
+﻿using System;
 
-namespace VectronsLibrary.TextBlockLogger.Internal
+namespace VectronsLibrary.TextBlockLogger
 {
-    public struct LogMessageEntry
+    internal readonly struct LogMessageEntry
     {
-        public Brush LevelBackground;
-        public Brush LevelForeground;
-        public string LevelString;
-        public string Message;
-        public Brush MessageColor;
+        public readonly LevelColors LevelColors;
+        public readonly string LevelString;
+        public readonly string Message;
+
+        public LogMessageEntry(string message, string levelString, LevelColors levelColors)
+        {
+            Message = message ?? throw new ArgumentNullException(nameof(message));
+            LevelString = levelString ?? throw new ArgumentNullException(nameof(levelString));
+            LevelColors = levelColors;
+        }
     }
 }
