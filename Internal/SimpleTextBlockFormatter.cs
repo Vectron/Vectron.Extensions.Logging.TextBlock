@@ -160,10 +160,10 @@ namespace VectronsLibrary.TextBlockLogger
 
             return logLevel switch
             {
-                LogLevel.Trace => new LevelColors(Brushes.Gray, Brushes.Black),
-                LogLevel.Debug => new LevelColors(Brushes.Gray, Brushes.Black),
-                LogLevel.Information => new LevelColors(Brushes.DarkGreen, Brushes.Black),
-                LogLevel.Warning => new LevelColors(Brushes.Yellow, Brushes.Black),
+                LogLevel.Trace => new LevelColors(Brushes.Gray, null),
+                LogLevel.Debug => new LevelColors(Brushes.Gray, null),
+                LogLevel.Information => new LevelColors(Brushes.DarkGreen, null),
+                LogLevel.Warning => new LevelColors(Brushes.Yellow, null),
                 LogLevel.Error => new LevelColors(Brushes.Black, Brushes.DarkRed),
                 LogLevel.Critical => new LevelColors(Brushes.White, Brushes.DarkRed),
                 _ => new LevelColors(null, null)
