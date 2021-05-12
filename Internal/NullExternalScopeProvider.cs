@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
+using Microsoft.Extensions.Logging;
 
 namespace VectronsLibrary.TextBlockLogger
 {
@@ -13,7 +13,7 @@ namespace VectronsLibrary.TextBlockLogger
         }
 
         /// <summary>
-        /// Returns a cached instance of <see cref="NullExternalScopeProvider"/>.
+        /// Gets a cached instance of <see cref="NullExternalScopeProvider"/>.
         /// </summary>
         public static IExternalScopeProvider Instance { get; } = new NullExternalScopeProvider();
 

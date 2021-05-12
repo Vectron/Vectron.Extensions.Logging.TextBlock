@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace VectronsLibrary.TextBlockLogger
 {
+    /// <summary>
+    /// A <see cref="ILoggerProvider"/> for <see cref="TextBlockLogger"/>.
+    /// </summary>
     [ProviderAlias("TextBlock")]
     internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
     {
@@ -16,6 +19,12 @@ namespace VectronsLibrary.TextBlockLogger
         private ConcurrentDictionary<string, TextBlockFormatter> formatters = new ConcurrentDictionary<string, TextBlockFormatter>();
         private IExternalScopeProvider scopeProvider = NullExternalScopeProvider.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBlockLoggerProvider"/> class.
+        /// </summary>
+        /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
+        /// <param name="textblockProvider">The <see cref="ITextblockProvider"/>.</param>
+        /// <param name="formatters">An <see cref="IEnumerable{T}"/> for getting the <see cref="TextBlockFormatter"/>.</param>
         public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextblockProvider textblockProvider, IEnumerable<TextBlockFormatter> formatters)
         {
             this.options = options;
@@ -31,12 +40,12 @@ namespace VectronsLibrary.TextBlockLogger
         public ILogger CreateLogger(string name)
         {
             if (options.CurrentValue.FormatterName == null
-                || !formatters.TryGetValue(options.CurrentValue.FormatterName, out TextBlockFormatter? logFormatter))
+                || !formatters.TryGetValue(options.CurrentValue.FormatterName, out var logFormatter))
             {
                 logFormatter = formatters[SimpleTextBlockFormatter.DefaultName];
             }
 
-            return loggers.TryGetValue(name, out TextBlockLogger? logger)
+            return loggers.TryGetValue(name, out var logger)
                 ? logger
                 : loggers.GetOrAdd(name, new TextBlockLogger(name, messageQueue)
                 {
@@ -58,7 +67,7 @@ namespace VectronsLibrary.TextBlockLogger
         {
             this.scopeProvider = scopeProvider;
 
-            foreach (KeyValuePair<string, TextBlockLogger> logger in loggers)
+            foreach (var logger in loggers)
             {
                 logger.Value.ScopeProvider = scopeProvider;
             }
@@ -67,12 +76,12 @@ namespace VectronsLibrary.TextBlockLogger
         private void ReloadLoggerOptions(TextBlockLoggerOptions options)
         {
             if (options.FormatterName == null
-                || !formatters.TryGetValue(options.FormatterName, out TextBlockFormatter? logFormatter))
+                || !formatters.TryGetValue(options.FormatterName, out var logFormatter))
             {
                 logFormatter = formatters[SimpleTextBlockFormatter.DefaultName];
             }
 
-            foreach (KeyValuePair<string, TextBlockLogger> logger in loggers)
+            foreach (var logger in loggers)
             {
                 logger.Value.Options = options;
                 logger.Value.Formatter = logFormatter;
@@ -84,10 +93,10 @@ namespace VectronsLibrary.TextBlockLogger
         private void SetFormatters(IEnumerable<TextBlockFormatter>? formatters = null)
         {
             var cd = new ConcurrentDictionary<string, TextBlockFormatter>(StringComparer.OrdinalIgnoreCase);
-            bool added = false;
+            var added = false;
             if (formatters != null)
             {
-                foreach (TextBlockFormatter formatter in formatters)
+                foreach (var formatter in formatters)
                 {
                     _ = cd.TryAdd(formatter.Name, formatter);
                     added = true;

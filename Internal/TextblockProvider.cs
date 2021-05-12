@@ -4,13 +4,18 @@ using System.Windows.Controls;
 
 namespace VectronsLibrary.TextBlockLogger
 {
+    /// <summary>
+    /// default implementation of <see cref="ITextblockProvider"/>.
+    /// </summary>
     internal class TextblockProvider : ITextblockProvider
     {
         private readonly MenuItem closeMenuItem = new MenuItem() { Header = "Clear" };
         private readonly ConcurrentDictionary<TextBlock, TextBlock> sinks = new ConcurrentDictionary<TextBlock, TextBlock>();
 
+        /// <inheritdoc/>
         public IEnumerable<TextBlock> Sinks => sinks.Values;
 
+        /// <inheritdoc/>
         public void AddTextBlock(TextBlock textBlock)
         {
             closeMenuItem.Click += (o, e) => textBlock.Inlines.Clear();
@@ -26,6 +31,7 @@ namespace VectronsLibrary.TextBlockLogger
             _ = sinks.TryAdd(textBlock, textBlock);
         }
 
+        /// <inheritdoc/>
         public void RemoveTextBlock(TextBlock textblock)
         {
             _ = sinks.TryRemove(textblock, out _);

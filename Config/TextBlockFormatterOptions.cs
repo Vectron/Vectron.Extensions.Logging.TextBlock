@@ -1,17 +1,17 @@
 ﻿namespace VectronsLibrary.TextBlockLogger
 {
+    /// <summary>
+    /// Options for the built-in textblock formatter.
+    /// </summary>
     public class TextBlockFormatterOptions
     {
-        public TextBlockFormatterOptions()
-        {
-        }
-
         /// <summary>
-        /// Includes scopes when <see langword="true" />.
+        /// Gets or sets a value indicating whether scope should be included.
         /// </summary>
         public bool IncludeScopes
         {
-            get; set;
+            get;
+            set;
         }
 
         /// <summary>
@@ -19,15 +19,17 @@
         /// </summary>
         public string? TimestampFormat
         {
-            get; set;
+            get;
+            set;
         }
 
         /// <summary>
-        /// Gets or sets indication whether or not UTC timezone should be used to for timestamps in logging messages. Defaults to <c>false</c>.
+        /// Gets or sets a value indicating whether UTC timezone should be used to for timestamps in logging messages. Defaults to <c>true</c>.
         /// </summary>
         public bool UseUtcTimestamp
         {
-            get; set;
+            get;
+            set;
         }
     }
 }

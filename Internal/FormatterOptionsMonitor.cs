@@ -1,23 +1,38 @@
-﻿using Microsoft.Extensions.Options;
-using System;
+﻿using System;
+using Microsoft.Extensions.Options;
 
 namespace VectronsLibrary.TextBlockLogger
 {
-    internal class FormatterOptionsMonitor<TOptions> :
-               IOptionsMonitor<TOptions>
+    /// <summary>
+    /// A <see cref="IOptionsMonitor{TOptions}"/> implementation for <see cref="TextBlockFormatterOptions"/>.
+    /// </summary>
+    /// <typeparam name="TOptions">The type of the option.</typeparam>
+    internal class FormatterOptionsMonitor<TOptions> : IOptionsMonitor<TOptions>
            where TOptions : TextBlockFormatterOptions
     {
-        private TOptions options;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormatterOptionsMonitor{TOptions}"/> class.
+        /// </summary>
+        /// <param name="options">The option to monitor.</param>
         public FormatterOptionsMonitor(TOptions options)
         {
-            this.options = options;
+            CurrentValue = options;
         }
 
-        public TOptions CurrentValue => options;
+        /// <inheritdoc/>
+        public TOptions CurrentValue
+        {
+            get;
+            private set;
+        }
 
-        public TOptions Get(string name) => options;
+        /// <inheritdoc/>
+        public TOptions Get(string name)
+        {
+            return CurrentValue;
+        }
 
+        /// <inheritdoc/>
         public IDisposable OnChange(Action<TOptions, string> listener)
         {
             return Disposable.Empty;
