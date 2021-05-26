@@ -15,9 +15,7 @@ namespace VectronsLibrary.TextBlockLogger
         /// </summary>
         /// <param name="options">The option to monitor.</param>
         public FormatterOptionsMonitor(TOptions options)
-        {
-            CurrentValue = options;
-        }
+            => CurrentValue = options;
 
         /// <inheritdoc/>
         public TOptions CurrentValue
@@ -28,14 +26,10 @@ namespace VectronsLibrary.TextBlockLogger
 
         /// <inheritdoc/>
         public TOptions Get(string name)
-        {
-            return CurrentValue;
-        }
+            => CurrentValue;
 
         /// <inheritdoc/>
         public IDisposable OnChange(Action<TOptions, string> listener)
-        {
-            return Disposable.Empty;
-        }
+            => Disposable.Empty;
     }
 }

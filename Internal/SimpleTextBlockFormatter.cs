@@ -46,9 +46,7 @@ namespace VectronsLibrary.TextBlockLogger
 
         /// <inheritdoc/>
         public void Dispose()
-        {
-            optionsReloadToken?.Dispose();
-        }
+            => optionsReloadToken?.Dispose();
 
         /// <inheritdoc/>
         public override (string LogLevelString, LevelColors LogLevelColors) LogLevelData<TState>(in LogEntry<TState> logEntry)
@@ -85,8 +83,7 @@ namespace VectronsLibrary.TextBlockLogger
         }
 
         private static string GetLogLevelString(LogLevel logLevel)
-        {
-            return logLevel switch
+            => logLevel switch
             {
                 LogLevel.Trace => "TRACE",
                 LogLevel.Debug => "DEBUG",
@@ -97,7 +94,6 @@ namespace VectronsLibrary.TextBlockLogger
                 LogLevel.None => "NONE",
                 _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
             };
-        }
 
         private static void WriteMessage(TextWriter textWriter, string message, bool singleLine)
         {
@@ -176,13 +172,10 @@ namespace VectronsLibrary.TextBlockLogger
         }
 
         private DateTimeOffset GetCurrentDateTime()
-        {
-            return FormatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
-        }
+            => FormatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
 
         private LevelColors GetLogLevelColors(LogLevel logLevel)
-        {
-            return FormatterOptions.DisableColors
+            => FormatterOptions.DisableColors
                 ? new LevelColors(null, null)
                 : logLevel switch
                 {
@@ -195,12 +188,9 @@ namespace VectronsLibrary.TextBlockLogger
                     LogLevel.None => new LevelColors(null, null),
                     _ => new LevelColors(null, null),
                 };
-        }
 
         private void ReloadLoggerOptions(SimpleTextBlockFormatterOptions options)
-        {
-            FormatterOptions = options;
-        }
+            => FormatterOptions = options;
 
         private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider scopeProvider, bool singleLine)
         {

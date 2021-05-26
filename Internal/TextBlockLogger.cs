@@ -56,15 +56,11 @@ namespace VectronsLibrary.TextBlockLogger
 
         /// <inheritdoc/>
         public IDisposable BeginScope<TState>(TState state)
-        {
-            return ScopeProvider?.Push(state) ?? NullScope.Instance;
-        }
+            => ScopeProvider?.Push(state) ?? NullScope.Instance;
 
         /// <inheritdoc/>
         public bool IsEnabled(LogLevel logLevel)
-        {
-            return logLevel != LogLevel.None;
-        }
+            => logLevel != LogLevel.None;
 
         /// <inheritdoc/>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)

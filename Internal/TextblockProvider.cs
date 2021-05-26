@@ -33,9 +33,7 @@ namespace VectronsLibrary.TextBlockLogger
 
         /// <inheritdoc/>
         public void RemoveTextBlock(TextBlock textblock)
-        {
-            _ = sinks.TryRemove(textblock, out _);
-        }
+            => _ = sinks.TryRemove(textblock, out _);
 
         private void TextBlock_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {

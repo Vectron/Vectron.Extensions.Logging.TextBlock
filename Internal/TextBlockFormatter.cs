@@ -15,9 +15,7 @@ namespace VectronsLibrary.TextBlockLogger
         /// </summary>
         /// <param name="name">The name of this formatter.</param>
         protected TextBlockFormatter(string name)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
+            => Name = name ?? throw new ArgumentNullException(nameof(name));
 
         /// <summary>
         /// Gets the name associated with the console log formatter.

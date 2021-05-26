@@ -8,6 +8,9 @@ namespace VectronsLibrary.TextBlockLogger
     /// </summary>
     internal class NullExternalScopeProvider : IExternalScopeProvider
     {
+        static NullExternalScopeProvider()
+            => Instance = new NullExternalScopeProvider();
+
         private NullExternalScopeProvider()
         {
         }
@@ -15,7 +18,10 @@ namespace VectronsLibrary.TextBlockLogger
         /// <summary>
         /// Gets a cached instance of <see cref="NullExternalScopeProvider"/>.
         /// </summary>
-        public static IExternalScopeProvider Instance { get; } = new NullExternalScopeProvider();
+        public static IExternalScopeProvider Instance
+        {
+            get;
+        }
 
         /// <inheritdoc />
         void IExternalScopeProvider.ForEachScope<TState>(Action<object?, TState> callback, TState state)
@@ -24,8 +30,6 @@ namespace VectronsLibrary.TextBlockLogger
 
         /// <inheritdoc />
         IDisposable IExternalScopeProvider.Push(object? state)
-        {
-            return NullScope.Instance;
-        }
+            => NullScope.Instance;
     }
 }

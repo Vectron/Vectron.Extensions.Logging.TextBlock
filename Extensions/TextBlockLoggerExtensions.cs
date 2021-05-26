@@ -19,9 +19,7 @@ namespace Microsoft.Extensions.Logging
         /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
         /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
         public static ILoggingBuilder AddSimpleTextBlock(this ILoggingBuilder builder)
-        {
-            return builder.AddFormatterWithName(SimpleTextBlockFormatter.DefaultName);
-        }
+            => builder.AddFormatterWithName(SimpleTextBlockFormatter.DefaultName);
 
         /// <summary>
         /// Add and configure a textblock log formatter named 'simple' to the factory.
@@ -30,9 +28,7 @@ namespace Microsoft.Extensions.Logging
         /// <param name="configure">A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in default log formatter.</param>
         /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
         public static ILoggingBuilder AddSimpleTextBlock(this ILoggingBuilder builder, Action<SimpleTextBlockFormatterOptions> configure)
-        {
-            return builder.AddTextBlockWithFormatter(SimpleTextBlockFormatter.DefaultName, configure);
-        }
+            => builder.AddTextBlockWithFormatter(SimpleTextBlockFormatter.DefaultName, configure);
 
         /// <summary>
         /// Adds a TextBlock logger named 'TextBlock' to the factory.
@@ -134,8 +130,6 @@ namespace Microsoft.Extensions.Logging
         }
 
         private static ILoggingBuilder AddFormatterWithName(this ILoggingBuilder builder, string name)
-        {
-            return builder.AddTextBlock((TextBlockLoggerOptions options) => options.FormatterName = name);
-        }
+            => builder.AddTextBlock((TextBlockLoggerOptions options) => options.FormatterName = name);
     }
 }
