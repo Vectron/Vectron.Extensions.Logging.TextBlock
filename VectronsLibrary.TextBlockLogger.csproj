@@ -4,7 +4,6 @@
     <OutputType>Library</OutputType>
     <UseWPF>true</UseWPF>
     <Description>A WPF Textblock logger target</Description>
-    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

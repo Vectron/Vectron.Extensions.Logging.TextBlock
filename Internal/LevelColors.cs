@@ -1,37 +1,36 @@
 ﻿using System.Windows.Media;
 
-namespace VectronsLibrary.TextBlockLogger
+namespace VectronsLibrary.TextBlockLogger;
+
+/// <summary>
+/// A class to store the forground and background color of text.
+/// </summary>
+public readonly struct LevelColors
 {
     /// <summary>
-    /// A class to store the forground and background color of text.
+    /// Initializes a new instance of the <see cref="LevelColors"/> struct.
     /// </summary>
-    public readonly struct LevelColors
+    /// <param name="foreground">The <see cref="Brush"/> to use to draw the foreground text.</param>
+    /// <param name="background">The <see cref="Brush"/> to use to draw the background.</param>
+    public LevelColors(Brush? foreground, Brush? background)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LevelColors"/> struct.
-        /// </summary>
-        /// <param name="foreground">The <see cref="Brush"/> to use to draw the foreground text.</param>
-        /// <param name="background">The <see cref="Brush"/> to use to draw the background.</param>
-        public LevelColors(Brush? foreground, Brush? background)
-        {
-            Foreground = foreground;
-            Background = background;
-        }
+        Foreground = foreground;
+        Background = background;
+    }
 
-        /// <summary>
-        /// Gets the <see cref="Brush"/> to use to draw the background text.
-        /// </summary>
-        public Brush? Background
-        {
-            get;
-        }
+    /// <summary>
+    /// Gets the <see cref="Brush"/> to use to draw the background text.
+    /// </summary>
+    public Brush? Background
+    {
+        get;
+    }
 
-        /// <summary>
-        /// Gets the <see cref="Brush"/> to use to draw the foreground text.
-        /// </summary>
-        public Brush? Foreground
-        {
-            get;
-        }
+    /// <summary>
+    /// Gets the <see cref="Brush"/> to use to draw the foreground text.
+    /// </summary>
+    public Brush? Foreground
+    {
+        get;
     }
 }
