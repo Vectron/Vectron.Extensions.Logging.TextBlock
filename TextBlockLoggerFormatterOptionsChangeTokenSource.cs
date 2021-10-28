@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
-using VectronsLibrary.TextBlockLogger;
+using VectronsLibrary.TextBlockLogger.Internal;
 
-namespace Microsoft.Extensions.Logging;
+namespace VectronsLibrary.TextBlockLogger;
 
 /// <summary>
 /// Implementation of <see cref="ConfigurationChangeTokenSource{TOptions}"/> for a <see cref="TextBlockFormatterOptions"/>.

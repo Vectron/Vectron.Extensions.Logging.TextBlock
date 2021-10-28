@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// default implementation of <see cref="ITextblockProvider"/>.

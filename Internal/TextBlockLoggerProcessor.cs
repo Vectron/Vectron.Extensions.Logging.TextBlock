@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Windows.Documents;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// Message processor that writes the messages to the actual <see cref="System.Windows.Controls.TextBlock"/>.

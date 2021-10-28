@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// A <see cref="ILoggerProvider"/> for <see cref="TextBlockLogger"/>.

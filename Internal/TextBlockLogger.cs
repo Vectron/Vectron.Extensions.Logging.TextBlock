@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// And <see cref="ILogger"/> implementation to log to a <see cref="System.Windows.Controls.TextBlock"/>.

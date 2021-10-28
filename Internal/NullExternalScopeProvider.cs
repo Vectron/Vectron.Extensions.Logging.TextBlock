@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// Scope provider that does nothing.

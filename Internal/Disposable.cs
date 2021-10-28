@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// An empty <see cref="IDisposable"/> implementation.

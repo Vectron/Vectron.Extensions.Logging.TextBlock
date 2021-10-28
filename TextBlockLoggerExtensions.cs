@@ -2,11 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
-using VectronsLibrary.TextBlockLogger;
+using VectronsLibrary.TextBlockLogger.Internal;
 
-namespace Microsoft.Extensions.Logging;
+namespace VectronsLibrary.TextBlockLogger;
 
 /// <summary>
 /// Extensions for the <see cref="ILoggingBuilder"/>.
@@ -130,5 +131,5 @@ public static class TextBlockLoggerExtensions
     }
 
     private static ILoggingBuilder AddFormatterWithName(this ILoggingBuilder builder, string name)
-        => builder.AddTextBlock((TextBlockLoggerOptions options) => options.FormatterName = name);
+        => builder.AddTextBlock((options) => options.FormatterName = name);
 }

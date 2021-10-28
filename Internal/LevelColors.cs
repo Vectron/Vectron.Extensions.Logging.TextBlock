@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// A class to store the forground and background color of text.
