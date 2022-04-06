@@ -61,6 +61,11 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
     /// <inheritdoc/>
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
     {
+        if (logEntry.Formatter == null)
+        {
+            return;
+        }
+
         var message = logEntry.Formatter(logEntry.State, logEntry.Exception);
         if (logEntry.Exception == null && message == null)
         {

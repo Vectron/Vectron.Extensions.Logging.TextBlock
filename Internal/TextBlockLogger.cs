@@ -63,7 +63,7 @@ internal class TextBlockLogger : ILogger
         => logLevel != LogLevel.None;
 
     /// <inheritdoc/>
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         if (!IsEnabled(logLevel)
             || Formatter == null
