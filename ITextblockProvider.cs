@@ -11,7 +11,7 @@ public interface ITextblockProvider
     /// <summary>
     /// Gets the <see cref="TextBlock"/>s to show the log in.
     /// </summary>
-    IEnumerable<TextBlock> Sinks
+    IEnumerable<ITextBlock> Sinks
     {
         get;
     }

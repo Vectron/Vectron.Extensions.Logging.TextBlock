@@ -21,16 +21,27 @@ internal class TextBlockLogger : ILogger
     /// </summary>
     /// <param name="name">The name of this <see cref="ILogger"/>.</param>
     /// <param name="loggerProcessor">The <see cref="TextBlockLoggerProcessor"/>.</param>
-    internal TextBlockLogger(string name, TextBlockLoggerProcessor loggerProcessor)
+    /// <param name="formatter">The formatter to format log messages.</param>
+    /// <param name="scopeProvider">A <see cref="IExternalScopeProvider"/>.</param>
+    /// <param name="options">Options for this logger.</param>
+    internal TextBlockLogger(
+        string name,
+        TextBlockLoggerProcessor loggerProcessor,
+        TextBlockFormatter formatter,
+        IExternalScopeProvider? scopeProvider,
+        TextBlockLoggerOptions options)
     {
         this.name = name ?? throw new ArgumentNullException(nameof(name));
         queueProcessor = loggerProcessor;
+        Formatter = formatter;
+        ScopeProvider = scopeProvider;
+        Options = options;
     }
 
     /// <summary>
     /// Gets or sets the <see cref="TextBlockFormatter"/> to use.
     /// </summary>
-    internal TextBlockFormatter? Formatter
+    internal TextBlockFormatter Formatter
     {
         get;
         set;
@@ -39,7 +50,7 @@ internal class TextBlockLogger : ILogger
     /// <summary>
     /// Gets or sets the <see cref="TextBlockLoggerOptions"/>.
     /// </summary>
-    internal TextBlockLoggerOptions? Options
+    internal TextBlockLoggerOptions Options
     {
         get;
         set;
@@ -66,7 +77,6 @@ internal class TextBlockLogger : ILogger
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         if (!IsEnabled(logLevel)
-            || Formatter == null
             || ScopeProvider == null)
         {
             return;
@@ -87,15 +97,13 @@ internal class TextBlockLogger : ILogger
             return;
         }
 
-        var buildString = sb.ToString();
+        var computedAnsiString = sb.ToString();
         _ = sb.Clear();
         if (sb.Capacity > 1024)
         {
             sb.Capacity = 1024;
         }
 
-        (var logLevelString, var logLevelColors) = Formatter.LogLevelData(in logEntry);
-
-        queueProcessor.EnqueueMessage(new LogMessageEntry(buildString, logLevelString, logLevelColors));
+        queueProcessor.EnqueueMessage(new LogMessageEntry(computedAnsiString));
     }
 }

@@ -6,20 +6,20 @@
 public class SimpleTextBlockFormatterOptions : TextBlockFormatterOptions
 {
     /// <summary>
-    /// Gets or sets a value indicating whether no colors should be used.
+    /// Gets or sets determines when to use color when logging messages.
     /// </summary>
-    public bool DisableColors
+    public LoggerColorBehavior ColorBehavior
     {
         get;
         set;
     }
 
     /// <summary>
-    /// Gets a value indicating whether messages should be printed on a single line.
+    /// Gets or sets a value indicating whether messages should be printed on a single line.
     /// </summary>
     public bool SingleLine
     {
         get;
-        internal set;
+        set;
     }
 }

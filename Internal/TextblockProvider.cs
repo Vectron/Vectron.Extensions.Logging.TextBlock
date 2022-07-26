@@ -1,23 +1,38 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using Microsoft.Extensions.Options;
 
 namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
 /// default implementation of <see cref="ITextblockProvider"/>.
 /// </summary>
-internal class TextblockProvider : ITextblockProvider
+internal class TextblockProvider : ITextblockProvider, IDisposable
 {
     private readonly MenuItem closeMenuItem = new()
     {
         Header = "Clear",
     };
 
-    private readonly ConcurrentDictionary<TextBlock, TextBlock> sinks = new();
+    private readonly IOptionsMonitor<TextBlockLoggerOptions> options;
+    private readonly IDisposable optionsReloadToken;
+    private readonly ConcurrentDictionary<TextBlock, ITextBlock> sinks = new();
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextblockProvider"/> class.
+    /// </summary>
+    /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
+    public TextblockProvider(IOptionsMonitor<TextBlockLoggerOptions> options)
+    {
+        ReloadLoggerOptions(options.CurrentValue);
+        optionsReloadToken = options.OnChange(ReloadLoggerOptions);
+        this.options = options;
+    }
 
     /// <inheritdoc/>
-    public IEnumerable<TextBlock> Sinks => sinks.Values;
+    public IEnumerable<ITextBlock> Sinks => sinks.Values;
 
     /// <inheritdoc/>
     public void AddTextBlock(TextBlock textBlock)
@@ -32,12 +47,24 @@ internal class TextblockProvider : ITextblockProvider
         _ = textBlock.ContextMenu.Items.Add(closeMenuItem);
 
         textBlock.Unloaded += TextBlock_Unloaded;
-        _ = sinks.TryAdd(textBlock, textBlock);
+        _ = sinks.TryAdd(textBlock, new AnsiParsingLogTextblock(textBlock, options.CurrentValue.MaxMessages));
     }
+
+    /// <inheritdoc/>
+    public void Dispose()
+        => optionsReloadToken.Dispose();
 
     /// <inheritdoc/>
     public void RemoveTextBlock(TextBlock textblock)
         => _ = sinks.TryRemove(textblock, out _);
+
+    private void ReloadLoggerOptions(TextBlockLoggerOptions currentValue)
+    {
+        foreach (var sink in sinks)
+        {
+            sink.Value.MaxMessages = currentValue.MaxMessages;
+        }
+    }
 
     private void TextBlock_Unloaded(object sender, System.Windows.RoutedEventArgs e)
     {

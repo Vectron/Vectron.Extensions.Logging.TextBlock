@@ -21,12 +21,10 @@ internal class FormatterOptionsMonitor<TOptions> : IOptionsMonitor<TOptions>
     public TOptions CurrentValue
     {
         get;
-        private set;
     }
 
     /// <inheritdoc/>
-    public TOptions Get(string name)
-        => CurrentValue;
+    public TOptions Get(string? name) => CurrentValue;
 
     /// <inheritdoc/>
     public IDisposable OnChange(Action<TOptions, string> listener)

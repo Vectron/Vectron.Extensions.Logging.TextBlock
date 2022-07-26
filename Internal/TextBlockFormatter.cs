@@ -26,14 +26,6 @@ public abstract class TextBlockFormatter
     }
 
     /// <summary>
-    /// Process a <see cref="LogEntry{TState}"/>.
-    /// </summary>
-    /// <typeparam name="TState">The type of the state object.</typeparam>
-    /// <param name="logEntry">The entry that needs to be logged.</param>
-    /// <returns>The formatted string and <see cref="LevelColors"/>.</returns>
-    public abstract (string LogLevelString, LevelColors LogLevelColors) LogLevelData<TState>(in LogEntry<TState> logEntry);
-
-    /// <summary>
     /// Writes the log message to the specified TextWriter.
     /// </summary>
     /// <param name="logEntry">The log entry.</param>

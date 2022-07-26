@@ -24,13 +24,26 @@ internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// </summary>
     /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
     /// <param name="textblockProvider">The <see cref="ITextblockProvider"/>.</param>
+    public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextblockProvider textblockProvider)
+        : this(options, textblockProvider, Array.Empty<TextBlockFormatter>())
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextBlockLoggerProvider"/> class.
+    /// </summary>
+    /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
+    /// <param name="textblockProvider">The <see cref="ITextblockProvider"/>.</param>
     /// <param name="formatters">An <see cref="IEnumerable{T}"/> for getting the <see cref="TextBlockFormatter"/>.</param>
     public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextblockProvider textblockProvider, IEnumerable<TextBlockFormatter> formatters)
     {
         this.options = options;
-        SetFormatters(formatters);
         loggers = new ConcurrentDictionary<string, TextBlockLogger>();
-        messageQueue = new TextBlockLoggerProcessor(textblockProvider);
+        SetFormatters(formatters);
+        messageQueue = new TextBlockLoggerProcessor(
+            textblockProvider,
+            options.CurrentValue.QueueFullMode,
+            options.CurrentValue.MaxQueueLength);
 
         ReloadLoggerOptions(options.CurrentValue);
         optionsReloadToken = options.OnChange(ReloadLoggerOptions);
@@ -42,17 +55,12 @@ internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
         if (options.CurrentValue.FormatterName == null
             || !formatters.TryGetValue(options.CurrentValue.FormatterName, out var logFormatter))
         {
-            logFormatter = formatters[SimpleTextBlockFormatter.DefaultName];
+            logFormatter = formatters[TextBlockFormatterNames.Simple];
         }
 
         return loggers.TryGetValue(name, out var logger)
             ? logger
-            : loggers.GetOrAdd(name, new TextBlockLogger(name, messageQueue)
-            {
-                Options = options.CurrentValue,
-                ScopeProvider = scopeProvider,
-                Formatter = logFormatter,
-            });
+            : loggers.GetOrAdd(name, new TextBlockLogger(name, messageQueue, logFormatter, scopeProvider, options.CurrentValue));
     }
 
     /// <inheritdoc />
@@ -78,16 +86,17 @@ internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
         if (options.FormatterName == null
             || !formatters.TryGetValue(options.FormatterName, out var logFormatter))
         {
-            logFormatter = formatters[SimpleTextBlockFormatter.DefaultName];
+            logFormatter = formatters[TextBlockFormatterNames.Simple];
         }
+
+        messageQueue.FullMode = options.QueueFullMode;
+        messageQueue.MaxQueueLength = options.MaxQueueLength;
 
         foreach (var logger in loggers)
         {
             logger.Value.Options = options;
             logger.Value.Formatter = logFormatter;
         }
-
-        messageQueue.MaxMessages = options.MaxMessages;
     }
 
     private void SetFormatters(IEnumerable<TextBlockFormatter>? formatters = null)
@@ -105,7 +114,7 @@ internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
 
         if (!added)
         {
-            _ = cd.TryAdd(SimpleTextBlockFormatter.DefaultName, new SimpleTextBlockFormatter(new FormatterOptionsMonitor<SimpleTextBlockFormatterOptions>(new SimpleTextBlockFormatterOptions())));
+            _ = cd.TryAdd(TextBlockFormatterNames.Simple, new SimpleTextBlockFormatter(new FormatterOptionsMonitor<SimpleTextBlockFormatterOptions>(new SimpleTextBlockFormatterOptions())));
         }
 
         this.formatters = cd;

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
-using System.Windows.Documents;
 
 namespace VectronsLibrary.TextBlockLogger.Internal;
 
@@ -10,44 +10,88 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// </summary>
 internal class TextBlockLoggerProcessor : IDisposable
 {
-    private const int MaxQueuedMessages = 1024;
-    private readonly BlockingCollection<LogMessageEntry> messageQueue = new(MaxQueuedMessages);
+    private readonly Queue<LogMessageEntry> messageQueue;
     private readonly Thread outputThread;
     private readonly ITextblockProvider textblockProvider;
+    private TextBlockLoggerQueueFullMode fullMode = TextBlockLoggerQueueFullMode.Wait;
+    private bool isAddingCompleted;
+    private int maxQueuedMessages = TextBlockLoggerOptions.DefaultMaxQueueLengthValue;
+    private volatile int messagesDropped;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextBlockLoggerProcessor"/> class.
     /// </summary>
-    /// <param name="textblockProvider">The <see cref="ITextblockProvider"/>.</param>
-    public TextBlockLoggerProcessor(ITextblockProvider textblockProvider)
+    /// <param name="textblockProvider">A <see cref="ITextblockProvider"/> implementastion.</param>
+    /// <param name="fullMode">The full mode to use.</param>
+    /// <param name="maxQueueLength">The max messages to queue.</param>
+    public TextBlockLoggerProcessor(ITextblockProvider textblockProvider, TextBlockLoggerQueueFullMode fullMode, int maxQueueLength)
     {
-        // Start TextBlock message queue processor
+        messageQueue = new Queue<LogMessageEntry>();
+        FullMode = fullMode;
+        MaxQueueLength = maxQueueLength;
+        this.textblockProvider = textblockProvider;
+
+        // Start Console message queue processor
         outputThread = new Thread(ProcessLogQueue)
         {
             IsBackground = true,
-            Name = "TextBlock logger queue processing thread",
+            Name = "Console logger queue processing thread",
         };
         outputThread.Start();
-        this.textblockProvider = textblockProvider;
     }
 
     /// <summary>
-    /// Gets or sets the maximum number of messages.
+    /// Gets or sets the full mode to use.
     /// </summary>
-    public int MaxMessages
+    public TextBlockLoggerQueueFullMode FullMode
     {
-        get;
-        set;
+        get => fullMode;
+        set
+        {
+            if (value is not TextBlockLoggerQueueFullMode.Wait and not TextBlockLoggerQueueFullMode.DropWrite)
+            {
+                throw new ArgumentOutOfRangeException(nameof(FullMode), $"{value} is not a supported queue mode value.");
+            }
+
+            lock (messageQueue)
+            {
+                // _fullMode is used inside the lock and is safer to guard setter with lock as well
+                // this set is not expected to happen frequently
+                fullMode = value;
+                Monitor.PulseAll(messageQueue);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the max messages to queue.
+    /// </summary>
+    public int MaxQueueLength
+    {
+        get => maxQueuedMessages;
+        set
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(MaxQueueLength), $"{nameof(MaxQueueLength)} must be larger than zero.");
+            }
+
+            lock (messageQueue)
+            {
+                maxQueuedMessages = value;
+                Monitor.PulseAll(messageQueue);
+            }
+        }
     }
 
     /// <inheritdoc/>
     public void Dispose()
     {
-        messageQueue.CompleteAdding();
+        CompleteAdding();
 
         try
         {
-            _ = outputThread.Join(1500);
+            _ = outputThread.Join(1500); // with timeout in-case Console is locked by user input
         }
         catch (ThreadStateException)
         {
@@ -55,95 +99,118 @@ internal class TextBlockLoggerProcessor : IDisposable
     }
 
     /// <summary>
-    /// Add a message to the write queu.
+    /// Enqueue a new log message.
     /// </summary>
-    /// <param name="message">The <see cref="LogMessageEntry"/> to enque.</param>
+    /// <param name="message">The message to enqueue.</param>
     public virtual void EnqueueMessage(LogMessageEntry message)
     {
-        if (!messageQueue.IsAddingCompleted)
-        {
-            try
-            {
-                messageQueue.Add(message);
-                return;
-            }
-            catch (InvalidOperationException)
-            {
-            }
-        }
-
-        // Adding is completed so just log the message
-        try
+        // cannot enqueue when adding is completed
+        if (!Enqueue(message))
         {
             WriteMessage(message);
         }
-        catch (Exception)
+    }
+
+    private void CompleteAdding()
+    {
+        lock (messageQueue)
         {
+            isAddingCompleted = true;
+            Monitor.PulseAll(messageQueue);
         }
     }
 
-    /// <summary>
-    /// Write the message to the <see cref="System.Windows.Controls.TextBlock"/>.
-    /// </summary>
-    /// <param name="message">The <see cref="LogMessageEntry"/> to write.</param>
-    internal virtual void WriteMessage(LogMessageEntry message)
+    private bool Enqueue(LogMessageEntry item)
     {
-        foreach (var textBlock in textblockProvider.Sinks)
+        lock (messageQueue)
         {
-            textBlock?.Dispatcher.Invoke(() =>
+            while (messageQueue.Count >= MaxQueueLength && !isAddingCompleted)
             {
-                if (message.LevelString != null)
+                if (FullMode == TextBlockLoggerQueueFullMode.DropWrite)
                 {
-                    var run1 = new Run(message.LevelString);
-
-                    if (message.LevelColors.Foreground != null)
-                    {
-                        run1.Foreground = message.LevelColors.Foreground;
-                    }
-
-                    if (message.LevelColors.Background != null)
-                    {
-                        run1.Background = message.LevelColors.Background;
-                    }
-
-                    if (textBlock.Inlines.Count > MaxMessages)
-                    {
-                        _ = textBlock.Inlines.Remove(textBlock.Inlines.FirstInline);
-                    }
-
-                    textBlock.Inlines.Add(run1);
+                    messagesDropped++;
+                    return true;
                 }
 
-                var run2 = new Run(message.Message);
+                Debug.Assert(FullMode == TextBlockLoggerQueueFullMode.Wait, "Invallid full mode.");
+                _ = Monitor.Wait(messageQueue);
+            }
 
-                if (textBlock.Inlines.Count > MaxMessages)
+            if (!isAddingCompleted)
+            {
+                Debug.Assert(messageQueue.Count < MaxQueueLength, "Message queue is full.");
+                var startedEmpty = messageQueue.Count == 0;
+                if (messagesDropped > 0)
                 {
-                    _ = textBlock.Inlines.Remove(textBlock.Inlines.FirstInline);
+                    messageQueue.Enqueue(new LogMessageEntry(message: $"{messagesDropped} message(s) dropped because of queue size limit. Increase the queue size or decrease logging verbosity to avoid this. You may change `TextBlockLoggerQueueFullMode` to stop dropping messages."));
+                    messagesDropped = 0;
                 }
 
-                textBlock.Inlines.Add(run2);
-            });
+                // if we just logged the dropped message warning this could push the queue size to
+                // MaxLength + 1, that shouldn't be a problem. It won't grow any further until it is less than
+                // MaxLength once again.
+                messageQueue.Enqueue(item);
+
+                // if the queue started empty it could be at 1 or 2 now
+                if (startedEmpty)
+                {
+                    // pulse for wait in Dequeue
+                    Monitor.PulseAll(messageQueue);
+                }
+
+                return true;
+            }
         }
+
+        return false;
     }
 
     private void ProcessLogQueue()
     {
+        while (TryDequeue(out var message))
+        {
+            WriteMessage(message);
+        }
+    }
+
+    private bool TryDequeue(out LogMessageEntry item)
+    {
+        lock (messageQueue)
+        {
+            while (messageQueue.Count == 0 && !isAddingCompleted)
+            {
+                _ = Monitor.Wait(messageQueue);
+            }
+
+            if (messageQueue.Count > 0 && !isAddingCompleted)
+            {
+                item = messageQueue.Dequeue();
+                if (messageQueue.Count == MaxQueueLength - 1)
+                {
+                    // pulse for wait in Enqueue
+                    Monitor.PulseAll(messageQueue);
+                }
+
+                return true;
+            }
+
+            item = default;
+            return false;
+        }
+    }
+
+    private void WriteMessage(LogMessageEntry entry)
+    {
         try
         {
-            foreach (var message in messageQueue.GetConsumingEnumerable())
+            foreach (var textBlock in textblockProvider.Sinks)
             {
-                WriteMessage(message);
+                textBlock.Write(entry.Message);
             }
         }
         catch
         {
-            try
-            {
-                messageQueue.CompleteAdding();
-            }
-            catch
-            {
-            }
+            CompleteAdding();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Windows.Media;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -13,11 +13,6 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// </summary>
 internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
 {
-    /// <summary>
-    /// The default name of this <see cref="SimpleTextBlockFormatter"/>.
-    /// </summary>
-    internal const string DefaultName = "Simple";
-
     private const string LoglevelPadding = ": ";
     private static readonly string MessagePadding = new(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
     private static readonly string NewLineWithMessagePadding = Environment.NewLine + MessagePadding;
@@ -28,9 +23,8 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
     /// </summary>
     /// <param name="options">The options for this <see cref="SimpleTextBlockFormatter"/>.</param>
     public SimpleTextBlockFormatter(IOptionsMonitor<SimpleTextBlockFormatterOptions> options)
-        : base(DefaultName)
+        : base(TextBlockFormatterNames.Simple)
     {
-        FormatterOptions = new SimpleTextBlockFormatterOptions();
         ReloadLoggerOptions(options.CurrentValue);
         optionsReloadToken = options.OnChange(ReloadLoggerOptions);
     }
@@ -38,7 +32,7 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
     /// <summary>
     /// Gets or sets the options instance for this <see cref="SimpleTextBlockFormatter"/>.
     /// </summary>
-    public SimpleTextBlockFormatterOptions FormatterOptions
+    internal SimpleTextBlockFormatterOptions FormatterOptions
     {
         get;
         set;
@@ -47,16 +41,6 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
     /// <inheritdoc/>
     public void Dispose()
         => optionsReloadToken?.Dispose();
-
-    /// <inheritdoc/>
-    public override (string LogLevelString, LevelColors LogLevelColors) LogLevelData<TState>(in LogEntry<TState> logEntry)
-    {
-        var logLevel = logEntry.LogLevel;
-        var logLevelColors = GetLogLevelColors(logLevel);
-        var logLevelString = GetLogLevelString(logLevel);
-
-        return (logLevelString, logLevelColors);
-    }
 
     /// <inheritdoc/>
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
@@ -72,31 +56,31 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
             return;
         }
 
-        string? timestamp = null;
+        var logLevel = logEntry.LogLevel;
+        var logLevelColors = GetLogLevelColors(logLevel);
+        var logLevelString = GetLogLevelString(logLevel);
+
         if (FormatterOptions.TimestampFormat != null)
         {
             var dateTimeOffset = GetCurrentDateTime();
-            timestamp = dateTimeOffset.ToString(FormatterOptions.TimestampFormat, CultureInfo.CurrentCulture);
-        }
-
-        if (timestamp != null)
-        {
+            var timestamp = dateTimeOffset.ToString(FormatterOptions.TimestampFormat, CultureInfo.CurrentCulture);
             textWriter.Write(timestamp);
         }
 
+        textWriter.WriteColoredMessage(logLevelString, logLevelColors.Background, logLevelColors.Foreground);
         CreateDefaultLogMessage(textWriter, logEntry, message, scopeProvider);
     }
 
     private static string GetLogLevelString(LogLevel logLevel)
         => logLevel switch
         {
-            LogLevel.Trace => "TRACE",
-            LogLevel.Debug => "DEBUG",
-            LogLevel.Information => "INFO",
-            LogLevel.Warning => "WARN",
-            LogLevel.Error => "FAIL",
-            LogLevel.Critical => "CRIT",
-            LogLevel.None => "NONE",
+            LogLevel.Trace => "trace",
+            LogLevel.Debug => "debug",
+            LogLevel.Information => "info",
+            LogLevel.Warning => "warn",
+            LogLevel.Error => "fail",
+            LogLevel.Critical => "crit",
+            LogLevel.None => "none",
             _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
         };
 
@@ -179,21 +163,28 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
     private DateTimeOffset GetCurrentDateTime()
         => FormatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
 
-    private LevelColors GetLogLevelColors(LogLevel logLevel)
-        => FormatterOptions.DisableColors
-            ? new LevelColors(null, null)
-            : logLevel switch
-            {
-                LogLevel.Trace => new LevelColors(Brushes.Gray, null),
-                LogLevel.Debug => new LevelColors(Brushes.Gray, null),
-                LogLevel.Information => new LevelColors(Brushes.DarkGreen, null),
-                LogLevel.Warning => new LevelColors(Brushes.Yellow, null),
-                LogLevel.Error => new LevelColors(Brushes.Black, Brushes.DarkRed),
-                LogLevel.Critical => new LevelColors(Brushes.White, Brushes.DarkRed),
-                LogLevel.None => new LevelColors(null, null),
-                _ => new LevelColors(null, null),
-            };
+    private TexblockColors GetLogLevelColors(LogLevel logLevel)
+    {
+        var disableColors = FormatterOptions.ColorBehavior is LoggerColorBehavior.Disabled or LoggerColorBehavior.Default;
+        if (disableColors)
+        {
+            return new TexblockColors(null, null);
+        }
 
+        return logLevel switch
+        {
+            LogLevel.Trace => new TexblockColors(ConsoleColor.Gray, null),
+            LogLevel.Debug => new TexblockColors(ConsoleColor.Gray, null),
+            LogLevel.Information => new TexblockColors(ConsoleColor.DarkGreen, null),
+            LogLevel.Warning => new TexblockColors(ConsoleColor.Yellow, null),
+            LogLevel.Error => new TexblockColors(ConsoleColor.Black, ConsoleColor.DarkRed),
+            LogLevel.Critical => new TexblockColors(ConsoleColor.White, ConsoleColor.DarkRed),
+            LogLevel.None => new TexblockColors(null, null),
+            _ => new TexblockColors(null, null),
+        };
+    }
+
+    [MemberNotNull(nameof(FormatterOptions))]
     private void ReloadLoggerOptions(SimpleTextBlockFormatterOptions options)
         => FormatterOptions = options;
 
@@ -226,4 +217,6 @@ internal class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
             }
         }
     }
+
+    private record struct TexblockColors(ConsoleColor? Foreground, ConsoleColor? Background);
 }
