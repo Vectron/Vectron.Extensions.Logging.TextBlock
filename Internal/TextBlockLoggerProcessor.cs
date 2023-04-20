@@ -102,7 +102,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
     /// Enqueue a new log message.
     /// </summary>
     /// <param name="message">The message to enqueue.</param>
-    public virtual void EnqueueMessage(LogMessageEntry message)
+    public void EnqueueMessage(LogMessageEntry message)
     {
         // cannot enqueue when adding is completed
         if (!Enqueue(message))
