@@ -123,14 +123,12 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
         textWriter.Write(logEntry.Category);
         textWriter.Write('[');
 
-#if NETCOREAPP
         Span<char> span = stackalloc char[10];
-        if (eventId.TryFormat(span, out var charsWritten))
+        if (eventId.TryFormat(span, out var charsWritten, default, CultureInfo.CurrentCulture))
         {
             textWriter.Write(span[..charsWritten]);
         }
         else
-#endif
         {
             textWriter.Write(eventId.ToString(CultureInfo.CurrentCulture));
         }
