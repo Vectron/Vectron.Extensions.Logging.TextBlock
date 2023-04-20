@@ -10,7 +10,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// A <see cref="ILoggerProvider"/> for <see cref="TextBlockLogger"/>.
 /// </summary>
 [ProviderAlias("TextBlock")]
-internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
+internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     private readonly ConcurrentDictionary<string, TextBlockLogger> loggers;
     private readonly TextBlockLoggerProcessor messageQueue;

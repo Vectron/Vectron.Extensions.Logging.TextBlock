@@ -7,7 +7,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// A <see cref="IOptionsMonitor{TOptions}"/> implementation for <see cref="TextBlockFormatterOptions"/>.
 /// </summary>
 /// <typeparam name="TOptions">The type of the option.</typeparam>
-internal class FormatterOptionsMonitor<TOptions> : IOptionsMonitor<TOptions>
+internal sealed class FormatterOptionsMonitor<TOptions> : IOptionsMonitor<TOptions>
         where TOptions : TextBlockFormatterOptions
 {
     /// <summary>

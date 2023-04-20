@@ -5,7 +5,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// An empty <see cref="IDisposable"/> implementation.
 /// </summary>
-internal class Disposable : IDisposable
+internal sealed class Disposable : IDisposable
 {
     /// <summary>
     /// Gets an <see cref="IDisposable"/> that doesn't do anything.

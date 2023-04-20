@@ -6,7 +6,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// Scope provider that does nothing.
 /// </summary>
-internal class NullExternalScopeProvider : IExternalScopeProvider
+internal sealed class NullExternalScopeProvider : IExternalScopeProvider
 {
     static NullExternalScopeProvider()
         => Instance = new NullExternalScopeProvider();

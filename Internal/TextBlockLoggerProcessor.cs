@@ -8,7 +8,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// Message processor that writes the messages to the actual <see cref="System.Windows.Controls.TextBlock"/>.
 /// </summary>
-internal class TextBlockLoggerProcessor : IDisposable
+internal sealed class TextBlockLoggerProcessor : IDisposable
 {
     private readonly Queue<LogMessageEntry> messageQueue;
     private readonly Thread outputThread;

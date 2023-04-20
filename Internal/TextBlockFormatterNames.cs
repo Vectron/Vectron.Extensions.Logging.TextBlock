@@ -3,7 +3,7 @@
 /// <summary>
 /// Reserved formatter names for the built-in text block formatters.
 /// </summary>
-internal class TextBlockFormatterNames
+internal sealed class TextBlockFormatterNames
 {
     /// <summary>
     /// Reserved name for simple text block formatter.

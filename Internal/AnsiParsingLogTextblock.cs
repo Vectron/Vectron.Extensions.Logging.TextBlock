@@ -8,7 +8,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// An ansi string parser that writes to a <see cref="TextBlock"/>.
 /// </summary>
-internal class AnsiParsingLogTextBlock : ITextBlock
+internal sealed class AnsiParsingLogTextBlock : ITextBlock
 {
     private readonly AnsiParser parser;
     private readonly TextBlock textBlock;

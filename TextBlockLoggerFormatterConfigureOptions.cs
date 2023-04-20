@@ -9,7 +9,7 @@ namespace VectronsLibrary.TextBlockLogger;
 /// </summary>
 /// <typeparam name="TFormatter">The type of formatter.</typeparam>
 /// <typeparam name="TOptions">The type of options to bind.</typeparam>
-internal class TextBlockLoggerFormatterConfigureOptions<TFormatter, TOptions> : ConfigureFromConfigurationOptions<TOptions>
+internal sealed class TextBlockLoggerFormatterConfigureOptions<TFormatter, TOptions> : ConfigureFromConfigurationOptions<TOptions>
     where TOptions : TextBlockFormatterOptions
     where TFormatter : TextBlockFormatter
 {

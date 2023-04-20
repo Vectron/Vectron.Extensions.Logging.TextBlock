@@ -5,7 +5,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// An empty scope without any logic.
 /// </summary>
-internal class NullScope : IDisposable
+internal sealed class NullScope : IDisposable
 {
     private NullScope()
     {

@@ -7,7 +7,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// An ansi color string parser.
 /// </summary>
-internal class AnsiParser
+internal sealed class AnsiParser
 {
     /// <summary>
     /// The Default background color.

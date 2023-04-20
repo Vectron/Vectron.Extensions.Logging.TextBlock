@@ -8,7 +8,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// And <see cref="ILogger"/> implementation to log to a <see cref="System.Windows.Controls.TextBlock"/>.
 /// </summary>
-internal class TextBlockLogger : ILogger
+internal sealed class TextBlockLogger : ILogger
 {
     [ThreadStatic]
     private static StringWriter? stringWriter;
