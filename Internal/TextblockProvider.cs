@@ -17,7 +17,7 @@ internal class TextBlockProvider : ITextBlockProvider, IDisposable
     };
 
     private readonly IOptionsMonitor<TextBlockLoggerOptions> options;
-    private readonly IDisposable optionsReloadToken;
+    private readonly IDisposable? optionsReloadToken;
     private readonly ConcurrentDictionary<TextBlock, ITextBlock> sinks = new();
 
     /// <summary>
@@ -38,21 +38,15 @@ internal class TextBlockProvider : ITextBlockProvider, IDisposable
     public void AddTextBlock(TextBlock textBlock)
     {
         closeMenuItem.Click += (o, e) => textBlock.Inlines.Clear();
-
-        if (textBlock.ContextMenu == null)
-        {
-            textBlock.ContextMenu = new ContextMenu();
-        }
-
+        textBlock.ContextMenu ??= new ContextMenu();
         _ = textBlock.ContextMenu.Items.Add(closeMenuItem);
-
         textBlock.Unloaded += TextBlock_Unloaded;
         _ = sinks.TryAdd(textBlock, new AnsiParsingLogTextBlock(textBlock, options.CurrentValue.MaxMessages));
     }
 
     /// <inheritdoc/>
     public void Dispose()
-        => optionsReloadToken.Dispose();
+        => optionsReloadToken?.Dispose();
 
     /// <inheritdoc/>
     public void RemoveTextBlock(TextBlock textBlock)

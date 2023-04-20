@@ -15,7 +15,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
     private readonly ConcurrentDictionary<string, TextBlockLogger> loggers;
     private readonly TextBlockLoggerProcessor messageQueue;
     private readonly IOptionsMonitor<TextBlockLoggerOptions> options;
-    private readonly IDisposable optionsReloadToken;
+    private readonly IDisposable? optionsReloadToken;
     private ConcurrentDictionary<string, TextBlockFormatter> formatters = new();
     private IExternalScopeProvider scopeProvider = NullExternalScopeProvider.Instance;
 

@@ -16,7 +16,7 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
     private const string LogLevelPadding = ": ";
     private static readonly string MessagePadding = new(' ', GetLogLevelString(LogLevel.Information).Length + LogLevelPadding.Length);
     private static readonly string NewLineWithMessagePadding = Environment.NewLine + MessagePadding;
-    private readonly IDisposable optionsReloadToken;
+    private readonly IDisposable? optionsReloadToken;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SimpleTextBlockFormatter"/> class.

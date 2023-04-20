@@ -66,7 +66,8 @@ internal sealed class TextBlockLogger : ILogger
     }
 
     /// <inheritdoc/>
-    public IDisposable BeginScope<TState>(TState state)
+    public IDisposable? BeginScope<TState>(TState state)
+        where TState : notnull
         => ScopeProvider?.Push(state) ?? NullScope.Instance;
 
     /// <inheritdoc/>
