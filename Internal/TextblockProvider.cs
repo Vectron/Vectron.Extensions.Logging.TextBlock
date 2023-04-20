@@ -7,9 +7,9 @@ using Microsoft.Extensions.Options;
 namespace VectronsLibrary.TextBlockLogger.Internal;
 
 /// <summary>
-/// default implementation of <see cref="ITextblockProvider"/>.
+/// default implementation of <see cref="ITextBlockProvider"/>.
 /// </summary>
-internal class TextblockProvider : ITextblockProvider, IDisposable
+internal class TextBlockProvider : ITextBlockProvider, IDisposable
 {
     private readonly MenuItem closeMenuItem = new()
     {
@@ -21,10 +21,10 @@ internal class TextblockProvider : ITextblockProvider, IDisposable
     private readonly ConcurrentDictionary<TextBlock, ITextBlock> sinks = new();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TextblockProvider"/> class.
+    /// Initializes a new instance of the <see cref="TextBlockProvider"/> class.
     /// </summary>
     /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
-    public TextblockProvider(IOptionsMonitor<TextBlockLoggerOptions> options)
+    public TextBlockProvider(IOptionsMonitor<TextBlockLoggerOptions> options)
     {
         ReloadLoggerOptions(options.CurrentValue);
         optionsReloadToken = options.OnChange(ReloadLoggerOptions);
@@ -47,7 +47,7 @@ internal class TextblockProvider : ITextblockProvider, IDisposable
         _ = textBlock.ContextMenu.Items.Add(closeMenuItem);
 
         textBlock.Unloaded += TextBlock_Unloaded;
-        _ = sinks.TryAdd(textBlock, new AnsiParsingLogTextblock(textBlock, options.CurrentValue.MaxMessages));
+        _ = sinks.TryAdd(textBlock, new AnsiParsingLogTextBlock(textBlock, options.CurrentValue.MaxMessages));
     }
 
     /// <inheritdoc/>
@@ -55,8 +55,8 @@ internal class TextblockProvider : ITextblockProvider, IDisposable
         => optionsReloadToken.Dispose();
 
     /// <inheritdoc/>
-    public void RemoveTextBlock(TextBlock textblock)
-        => _ = sinks.TryRemove(textblock, out _);
+    public void RemoveTextBlock(TextBlock textBlock)
+        => _ = sinks.TryRemove(textBlock, out _);
 
     private void ReloadLoggerOptions(TextBlockLoggerOptions currentValue)
     {

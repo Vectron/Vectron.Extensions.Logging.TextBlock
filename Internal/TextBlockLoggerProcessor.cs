@@ -12,7 +12,7 @@ internal class TextBlockLoggerProcessor : IDisposable
 {
     private readonly Queue<LogMessageEntry> messageQueue;
     private readonly Thread outputThread;
-    private readonly ITextblockProvider textblockProvider;
+    private readonly ITextBlockProvider textBlockProvider;
     private TextBlockLoggerQueueFullMode fullMode = TextBlockLoggerQueueFullMode.Wait;
     private bool isAddingCompleted;
     private int maxQueuedMessages = TextBlockLoggerOptions.DefaultMaxQueueLengthValue;
@@ -21,15 +21,15 @@ internal class TextBlockLoggerProcessor : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="TextBlockLoggerProcessor"/> class.
     /// </summary>
-    /// <param name="textblockProvider">A <see cref="ITextblockProvider"/> implementastion.</param>
+    /// <param name="textBlockProvider">A <see cref="ITextBlockProvider"/> implementation.</param>
     /// <param name="fullMode">The full mode to use.</param>
     /// <param name="maxQueueLength">The max messages to queue.</param>
-    public TextBlockLoggerProcessor(ITextblockProvider textblockProvider, TextBlockLoggerQueueFullMode fullMode, int maxQueueLength)
+    public TextBlockLoggerProcessor(ITextBlockProvider textBlockProvider, TextBlockLoggerQueueFullMode fullMode, int maxQueueLength)
     {
         messageQueue = new Queue<LogMessageEntry>();
         FullMode = fullMode;
         MaxQueueLength = maxQueueLength;
-        this.textblockProvider = textblockProvider;
+        this.textBlockProvider = textBlockProvider;
 
         // Start Console message queue processor
         outputThread = new Thread(ProcessLogQueue)
@@ -132,7 +132,7 @@ internal class TextBlockLoggerProcessor : IDisposable
                     return true;
                 }
 
-                Debug.Assert(FullMode == TextBlockLoggerQueueFullMode.Wait, "Invallid full mode.");
+                Debug.Assert(FullMode == TextBlockLoggerQueueFullMode.Wait, "Invalid full mode.");
                 _ = Monitor.Wait(messageQueue);
             }
 
@@ -203,7 +203,7 @@ internal class TextBlockLoggerProcessor : IDisposable
     {
         try
         {
-            foreach (var textBlock in textblockProvider.Sinks)
+            foreach (var textBlock in textBlockProvider.Sinks)
             {
                 textBlock.Write(entry.Message);
             }

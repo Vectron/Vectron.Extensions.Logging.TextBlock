@@ -8,17 +8,17 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 /// <summary>
 /// An ansi string parser that writes to a <see cref="TextBlock"/>.
 /// </summary>
-internal class AnsiParsingLogTextblock : ITextBlock
+internal class AnsiParsingLogTextBlock : ITextBlock
 {
     private readonly AnsiParser parser;
     private readonly TextBlock textBlock;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AnsiParsingLogTextblock"/> class.
+    /// Initializes a new instance of the <see cref="AnsiParsingLogTextBlock"/> class.
     /// </summary>
-    /// <param name="textBlock">The textblock we are writing to.</param>
+    /// <param name="textBlock">The textBlock we are writing to.</param>
     /// <param name="maxMessages">Maximum number of messages to display in the <see cref="TextBlock"/>.</param>
-    public AnsiParsingLogTextblock(TextBlock textBlock, int maxMessages)
+    public AnsiParsingLogTextBlock(TextBlock textBlock, int maxMessages)
     {
         this.textBlock = textBlock;
         MaxMessages = maxMessages;

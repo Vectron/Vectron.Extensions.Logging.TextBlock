@@ -6,7 +6,7 @@ namespace VectronsLibrary.TextBlockLogger;
 /// <summary>
 /// A provider for the <see cref="TextBlock"/>.
 /// </summary>
-public interface ITextblockProvider
+public interface ITextBlockProvider
 {
     /// <summary>
     /// Gets the <see cref="TextBlock"/>s to show the log in.
@@ -19,12 +19,12 @@ public interface ITextblockProvider
     /// <summary>
     /// Add a <see cref="TextBlock"/> sink.
     /// </summary>
-    /// <param name="textblock">The <see cref="TextBlock"/> to add.</param>
-    void AddTextBlock(TextBlock textblock);
+    /// <param name="textBlock">The <see cref="TextBlock"/> to add.</param>
+    void AddTextBlock(TextBlock textBlock);
 
     /// <summary>
     /// Remove a <see cref="TextBlock"/> sink.
     /// </summary>
-    /// <param name="textblock">The <see cref="TextBlock"/> to remove.</param>
-    void RemoveTextBlock(TextBlock textblock);
+    /// <param name="textBlock">The <see cref="TextBlock"/> to remove.</param>
+    void RemoveTextBlock(TextBlock textBlock);
 }

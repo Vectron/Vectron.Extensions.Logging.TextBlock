@@ -23,9 +23,9 @@ internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// Initializes a new instance of the <see cref="TextBlockLoggerProvider"/> class.
     /// </summary>
     /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
-    /// <param name="textblockProvider">The <see cref="ITextblockProvider"/>.</param>
-    public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextblockProvider textblockProvider)
-        : this(options, textblockProvider, Array.Empty<TextBlockFormatter>())
+    /// <param name="textBlockProvider">The <see cref="ITextBlockProvider"/>.</param>
+    public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextBlockProvider textBlockProvider)
+        : this(options, textBlockProvider, Array.Empty<TextBlockFormatter>())
     {
     }
 
@@ -33,15 +33,15 @@ internal class TextBlockLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// Initializes a new instance of the <see cref="TextBlockLoggerProvider"/> class.
     /// </summary>
     /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
-    /// <param name="textblockProvider">The <see cref="ITextblockProvider"/>.</param>
+    /// <param name="textBlockProvider">The <see cref="ITextBlockProvider"/>.</param>
     /// <param name="formatters">An <see cref="IEnumerable{T}"/> for getting the <see cref="TextBlockFormatter"/>.</param>
-    public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextblockProvider textblockProvider, IEnumerable<TextBlockFormatter> formatters)
+    public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextBlockProvider textBlockProvider, IEnumerable<TextBlockFormatter> formatters)
     {
         this.options = options;
         loggers = new ConcurrentDictionary<string, TextBlockLogger>();
         SetFormatters(formatters);
         messageQueue = new TextBlockLoggerProcessor(
-            textblockProvider,
+            textBlockProvider,
             options.CurrentValue.QueueFullMode,
             options.CurrentValue.MaxQueueLength);
 

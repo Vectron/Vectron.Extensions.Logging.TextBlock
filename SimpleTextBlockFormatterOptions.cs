@@ -1,7 +1,7 @@
 ﻿namespace VectronsLibrary.TextBlockLogger;
 
 /// <summary>
-/// Options for the built-in default textblock formatter.
+/// Options for the built-in default text block formatter.
 /// </summary>
 public class SimpleTextBlockFormatterOptions : TextBlockFormatterOptions
 {

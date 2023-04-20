@@ -14,10 +14,10 @@ internal static class TextWriterExtensions
     /// <param name="textWriter">The <see cref="TextWriter"/> to write to.</param>
     /// <param name="message">The message to write.</param>
     /// <param name="background">The background color.</param>
-    /// <param name="foreground">The forground color.</param>
+    /// <param name="foreground">The foreground color.</param>
     public static void WriteColoredMessage(this TextWriter textWriter, string message, ConsoleColor? background, ConsoleColor? foreground)
     {
-        // Order: backgroundcolor, foregroundcolor, Message, reset foregroundcolor, reset backgroundcolor
+        // Order: background color, foreground color, Message, reset foreground color, reset background color
         if (background.HasValue)
         {
             textWriter.Write(AnsiParser.GetBackgroundColorEscapeCode(background.Value));

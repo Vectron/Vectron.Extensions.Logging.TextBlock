@@ -8,7 +8,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 internal class Disposable : IDisposable
 {
     /// <summary>
-    /// Gets an <see cref="IDisposable"/> that doesnt do anything.
+    /// Gets an <see cref="IDisposable"/> that doesn't do anything.
     /// </summary>
     public static IDisposable Empty => new Disposable();
 

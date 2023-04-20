@@ -15,7 +15,7 @@ internal class AnsiParser
     internal const string DefaultBackgroundColor = "\x1B[49m";
 
     /// <summary>
-    /// The Default forground color.
+    /// The Default foreground color.
     /// </summary>
     internal const string DefaultForegroundColor = "\x1B[39m\x1B[22m";
 
@@ -34,7 +34,7 @@ internal class AnsiParser
     /// Set Attribute Mode [{attr1};...;{attrn}m
     /// Sets multiple display attribute settings. The following lists standard attributes that are getting parsed:
     /// 1 Bright
-    /// Foreground Colours
+    /// Foreground Colors
     /// 30 Black
     /// 31 Red
     /// 32 Green
@@ -43,7 +43,7 @@ internal class AnsiParser
     /// 35 Magenta
     /// 36 Cyan
     /// 37 White
-    /// Background Colours
+    /// Background Colors
     /// 40 Black
     /// 41 Red
     /// 42 Green
