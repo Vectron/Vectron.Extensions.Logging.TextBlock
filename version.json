@@ -1,8 +1,8 @@
-﻿{
+{
   "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
-  "version": "4.0",
-  "pathFilters": [
-    "."
+  "version": "4.1",
+  "publicReleaseRefSpec": [
+    "^refs/tags/v\\d+\\.\\d+"
   ],
-  "inherit": true
+  "inherit": false
 }
