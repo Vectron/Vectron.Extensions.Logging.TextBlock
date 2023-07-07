@@ -1,9 +1,9 @@
-﻿namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// Reserved formatter names for the built-in text block formatters.
 /// </summary>
-internal sealed class TextBlockFormatterNames
+internal static class TextBlockFormatterNames
 {
     /// <summary>
     /// Reserved name for simple text block formatter.

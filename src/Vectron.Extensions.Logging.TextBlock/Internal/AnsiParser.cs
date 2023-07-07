@@ -1,11 +1,10 @@
-﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
-/// An ansi color string parser.
+/// An ANSI color string parser.
 /// </summary>
 internal sealed class AnsiParser
 {
@@ -24,36 +23,24 @@ internal sealed class AnsiParser
     /// <summary>
     /// Initializes a new instance of the <see cref="AnsiParser"/> class.
     /// </summary>
-    /// <param name="onParseWrite">A <see cref="Action"/> to execute when the message needs to be written.</param>
+    /// <param name="onParseWrite">
+    /// A <see cref="Action"/> to execute when the message needs to be written.
+    /// </param>
     public AnsiParser(Action<string, int, int, ConsoleColor?, ConsoleColor?> onParseWrite)
         => this.onParseWrite = onParseWrite;
 
     /// <summary>
-    /// Parses a subset of display attributes
-    /// Set Display Attributes
-    /// Set Attribute Mode [{attr1};...;{attrn}m
-    /// Sets multiple display attribute settings. The following lists standard attributes that are getting parsed:
-    /// 1 Bright
-    /// Foreground Colors
-    /// 30 Black
-    /// 31 Red
-    /// 32 Green
-    /// 33 Yellow
-    /// 34 Blue
-    /// 35 Magenta
-    /// 36 Cyan
-    /// 37 White
-    /// Background Colors
-    /// 40 Black
-    /// 41 Red
-    /// 42 Green
-    /// 43 Yellow
-    /// 44 Blue
-    /// 45 Magenta
-    /// 46 Cyan
-    /// 47 White.
+    /// Parses a subset of display attributes Set Display Attributes Set Attribute Mode
+    /// [{attr-1};...;{attr-n}m Sets multiple display attribute settings. The following lists
+    /// standard attributes that are getting parsed: 1 Bright Foreground Colors 30 Black 31 Red 32
+    /// Green 33 Yellow 34 Blue 35 Magenta 36 Cyan 37 White Background Colors 40 Black 41 Red 42
+    /// Green 43 Yellow 44 Blue 45 Magenta 46 Cyan 47 White.
     /// </summary>
     /// <param name="message">The message to parse.</param>
+    [SuppressMessage(
+        "Design",
+        "MA0051:Method is too long",
+        Justification = "No clear way to make the method shorter.")]
     public void Parse(string message)
     {
         var startIndex = -1;
@@ -148,10 +135,10 @@ internal sealed class AnsiParser
     }
 
     /// <summary>
-    /// Get the ansi color code for the given <see cref="ConsoleColor"/>.
+    /// Get the ANSI color code for the given <see cref="ConsoleColor"/>.
     /// </summary>
     /// <param name="color">The <see cref="ConsoleColor"/> to convert.</param>
-    /// <returns>The ansi color string.</returns>
+    /// <returns>The ANSI color string.</returns>
     [SuppressMessage("Style", "IDE0072:Add missing cases", Justification = "Don't need te other cases.")]
     internal static string GetBackgroundColorEscapeCode(ConsoleColor color)
         => color switch
@@ -168,10 +155,10 @@ internal sealed class AnsiParser
         };
 
     /// <summary>
-    /// Get the ansi color code for the given <see cref="ConsoleColor"/>.
+    /// Get the ANSI color code for the given <see cref="ConsoleColor"/>.
     /// </summary>
     /// <param name="color">The <see cref="ConsoleColor"/> to convert.</param>
-    /// <returns>The ansi color string.</returns>
+    /// <returns>The ANSI color string.</returns>
     [SuppressMessage("Style", "IDE0072:Add missing cases", Justification = "Don't need te other cases.")]
     internal static string GetForegroundColorEscapeCode(ConsoleColor color)
         => color switch

@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// Options for the built-in text block formatter.
@@ -24,7 +24,8 @@ public class TextBlockFormatterOptions
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether UTC time zone should be used to for timestamps in logging messages. Defaults to <c>true</c>.
+    /// Gets or sets a value indicating whether UTC time zone should be used to for timestamps in
+    /// logging messages. Defaults to <c>true</c>.
     /// </summary>
     public bool UseUtcTimestamp
     {

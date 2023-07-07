@@ -1,7 +1,6 @@
-﻿using System;
 using Microsoft.Extensions.Options;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// A <see cref="IOptionsMonitor{TOptions}"/> implementation for <see cref="TextBlockFormatterOptions"/>.

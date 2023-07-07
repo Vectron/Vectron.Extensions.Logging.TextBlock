@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
-using VectronsLibrary.TextBlockLogger.Internal;
+using Vectron.Extensions.Logging.TextBlock.Internal;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// Implementation of <see cref="ConfigurationChangeTokenSource{TOptions}"/> for a <see cref="TextBlockFormatterOptions"/>.
@@ -14,7 +14,8 @@ internal sealed class TextBlockLoggerFormatterOptionsChangeTokenSource<TFormatte
     where TFormatter : TextBlockFormatter
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="TextBlockLoggerFormatterOptionsChangeTokenSource{TFormatter, TOptions}"/> class.
+    /// Initializes a new instance of the
+    /// <see cref="TextBlockLoggerFormatterOptionsChangeTokenSource{TFormatter, TOptions}"/> class.
     /// </summary>
     /// <param name="providerConfiguration"><see cref="ILoggerProviderConfiguration{T}"/>.</param>
     public TextBlockLoggerFormatterOptionsChangeTokenSource(ILoggerProviderConfiguration<TextBlockLoggerProvider> providerConfiguration)

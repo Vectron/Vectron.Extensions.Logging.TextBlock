@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
+using System.Globalization;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// Message processor that writes the messages to the actual <see cref="System.Windows.Controls.TextBlock"/>.
@@ -50,7 +48,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
         {
             if (value is not TextBlockLoggerQueueFullMode.Wait and not TextBlockLoggerQueueFullMode.DropWrite)
             {
-                throw new ArgumentOutOfRangeException(nameof(FullMode), $"{value} is not a supported queue mode value.");
+                throw new ArgumentOutOfRangeException(nameof(value), $"{value} is not a supported queue mode value.");
             }
 
             lock (messageQueue)
@@ -73,7 +71,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
         {
             if (value <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(MaxQueueLength), $"{nameof(MaxQueueLength)} must be larger than zero.");
+                throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(MaxQueueLength)} must be larger than zero.");
             }
 
             lock (messageQueue)
@@ -142,13 +140,13 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
                 var startedEmpty = messageQueue.Count == 0;
                 if (messagesDropped > 0)
                 {
-                    messageQueue.Enqueue(new LogMessageEntry(message: $"{messagesDropped} message(s) dropped because of queue size limit. Increase the queue size or decrease logging verbosity to avoid this. You may change `TextBlockLoggerQueueFullMode` to stop dropping messages."));
+                    messageQueue.Enqueue(new LogMessageEntry(message: $"{messagesDropped.ToString(CultureInfo.CurrentCulture)} message(s) dropped because of queue size limit. Increase the queue size or decrease logging verbosity to avoid this. You may change `TextBlockLoggerQueueFullMode` to stop dropping messages."));
                     messagesDropped = 0;
                 }
 
                 // if we just logged the dropped message warning this could push the queue size to
-                // MaxLength + 1, that shouldn't be a problem. It won't grow any further until it is less than
-                // MaxLength once again.
+                // MaxLength + 1, that shouldn't be a problem. It won't grow any further until it is
+                // less than MaxLength once again.
                 messageQueue.Enqueue(item);
 
                 // if the queue started empty it could be at 1 or 2 now

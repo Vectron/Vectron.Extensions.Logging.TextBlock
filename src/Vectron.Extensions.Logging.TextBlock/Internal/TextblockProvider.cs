@@ -1,15 +1,13 @@
-﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Windows.Controls;
 using Microsoft.Extensions.Options;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// default implementation of <see cref="ITextBlockProvider"/>.
 /// </summary>
-internal class TextBlockProvider : ITextBlockProvider, IDisposable
+internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
 {
     private readonly MenuItem closeMenuItem = new()
     {
@@ -18,7 +16,7 @@ internal class TextBlockProvider : ITextBlockProvider, IDisposable
 
     private readonly IOptionsMonitor<TextBlockLoggerOptions> options;
     private readonly IDisposable? optionsReloadToken;
-    private readonly ConcurrentDictionary<TextBlock, ITextBlock> sinks = new();
+    private readonly ConcurrentDictionary<System.Windows.Controls.TextBlock, ITextBlock> sinks = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextBlockProvider"/> class.
@@ -35,7 +33,7 @@ internal class TextBlockProvider : ITextBlockProvider, IDisposable
     public IEnumerable<ITextBlock> Sinks => sinks.Values;
 
     /// <inheritdoc/>
-    public void AddTextBlock(TextBlock textBlock)
+    public void AddTextBlock(System.Windows.Controls.TextBlock textBlock)
     {
         closeMenuItem.Click += (o, e) => textBlock.Inlines.Clear();
         textBlock.ContextMenu ??= new ContextMenu();
@@ -49,7 +47,7 @@ internal class TextBlockProvider : ITextBlockProvider, IDisposable
         => optionsReloadToken?.Dispose();
 
     /// <inheritdoc/>
-    public void RemoveTextBlock(TextBlock textBlock)
+    public void RemoveTextBlock(System.Windows.Controls.TextBlock textBlock)
         => _ = sinks.TryRemove(textBlock, out _);
 
     private void ReloadLoggerOptions(TextBlockLoggerOptions currentValue)
@@ -62,7 +60,7 @@ internal class TextBlockProvider : ITextBlockProvider, IDisposable
 
     private void TextBlock_Unloaded(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (sender is TextBlock textBlock)
+        if (sender is System.Windows.Controls.TextBlock textBlock)
         {
             RemoveTextBlock(textBlock);
         }

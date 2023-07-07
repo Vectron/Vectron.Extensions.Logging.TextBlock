@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// A container for a parsed log message.

@@ -1,14 +1,12 @@
-﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
-using VectronsLibrary.TextBlockLogger.Internal;
+using Vectron.Extensions.Logging.TextBlock.Internal;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// Extensions for the <see cref="ILoggingBuilder"/>.
@@ -27,7 +25,10 @@ public static class TextBlockLoggerExtensions
     /// Add and configure a text block log formatter named 'simple' to the factory.
     /// </summary>
     /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-    /// <param name="configure">A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in default log formatter.</param>
+    /// <param name="configure">
+    /// A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in default
+    /// log formatter.
+    /// </param>
     /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
     public static ILoggingBuilder AddSimpleTextBlock(this ILoggingBuilder builder, Action<SimpleTextBlockFormatterOptions> configure)
         => builder.AddTextBlockWithFormatter(TextBlockFormatterNames.Simple, configure);
@@ -68,10 +69,16 @@ public static class TextBlockLoggerExtensions
     /// <summary>
     /// Adds a custom text block logger formatter 'TFormatter' to be configured with options 'TOptions'.
     /// </summary>
-    /// <typeparam name="TFormatter">A <see cref="TextBlockFormatter"/> to use when formatting the text.</typeparam>
-    /// <typeparam name="TOptions">The <see cref="TextBlockFormatterOptions"/> to pass to the formatter.</typeparam>
+    /// <typeparam name="TFormatter">
+    /// A <see cref="TextBlockFormatter"/> to use when formatting the text.
+    /// </typeparam>
+    /// <typeparam name="TOptions">
+    /// The <see cref="TextBlockFormatterOptions"/> to pass to the formatter.
+    /// </typeparam>
     /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-    /// <param name="configure">A delegate to configure options 'TOptions' for custom formatter 'TFormatter'.</param>
+    /// <param name="configure">
+    /// A delegate to configure options 'TOptions' for custom formatter 'TFormatter'.
+    /// </param>
     /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
     public static ILoggingBuilder AddTextBlockFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder, Action<TOptions> configure)
         where TOptions : TextBlockFormatterOptions
@@ -90,8 +97,12 @@ public static class TextBlockLoggerExtensions
     /// <summary>
     /// Adds a custom text block logger formatter 'TFormatter' to be configured with options 'TOptions'.
     /// </summary>
-    /// <typeparam name="TFormatter">A <see cref="TextBlockFormatter"/> to use when formatting the text.</typeparam>
-    /// <typeparam name="TOptions">The <see cref="TextBlockFormatterOptions"/> to pass to the formatter.</typeparam>
+    /// <typeparam name="TFormatter">
+    /// A <see cref="TextBlockFormatter"/> to use when formatting the text.
+    /// </typeparam>
+    /// <typeparam name="TOptions">
+    /// The <see cref="TextBlockFormatterOptions"/> to pass to the formatter.
+    /// </typeparam>
     /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
     /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
     public static ILoggingBuilder AddTextBlockFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder)
@@ -108,10 +119,14 @@ public static class TextBlockLoggerExtensions
     /// <summary>
     /// Add a text block logger with a named formatter.
     /// </summary>
-    /// <typeparam name="TOptions">The <see cref="TextBlockFormatterOptions"/> to pass to the formatter.</typeparam>
+    /// <typeparam name="TOptions">
+    /// The <see cref="TextBlockFormatterOptions"/> to pass to the formatter.
+    /// </typeparam>
     /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
     /// <param name="name">The name of the formatter to use.</param>
-    /// <param name="configure">A delegate to configure options 'TOptions' for custom formatter 'TFormatter'.</param>
+    /// <param name="configure">
+    /// A delegate to configure options 'TOptions' for custom formatter 'TFormatter'.
+    /// </param>
     /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
     internal static ILoggingBuilder AddTextBlockWithFormatter<TOptions>(this ILoggingBuilder builder, string name, Action<TOptions> configure)
         where TOptions : TextBlockFormatterOptions

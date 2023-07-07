@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Controls;
-
-namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// A provider for the <see cref="TextBlock"/>.
@@ -9,7 +6,7 @@ namespace VectronsLibrary.TextBlockLogger;
 public interface ITextBlockProvider
 {
     /// <summary>
-    /// Gets the <see cref="TextBlock"/>s to show the log in.
+    /// Gets the <see cref="TextBlock"/> s to show the log in.
     /// </summary>
     IEnumerable<ITextBlock> Sinks
     {
@@ -20,11 +17,11 @@ public interface ITextBlockProvider
     /// Add a <see cref="TextBlock"/> sink.
     /// </summary>
     /// <param name="textBlock">The <see cref="TextBlock"/> to add.</param>
-    void AddTextBlock(TextBlock textBlock);
+    void AddTextBlock(System.Windows.Controls.TextBlock textBlock);
 
     /// <summary>
     /// Remove a <see cref="TextBlock"/> sink.
     /// </summary>
     /// <param name="textBlock">The <see cref="TextBlock"/> to remove.</param>
-    void RemoveTextBlock(TextBlock textBlock);
+    void RemoveTextBlock(System.Windows.Controls.TextBlock textBlock);
 }

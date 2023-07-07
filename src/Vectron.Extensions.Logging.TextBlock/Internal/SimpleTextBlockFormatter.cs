@@ -1,12 +1,12 @@
-﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// A simple log message formatter.
@@ -103,7 +103,7 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
 
         static void WriteReplacing(TextWriter writer, string oldValue, string newValue, string message)
         {
-            var newMessage = message.Replace(oldValue, newValue);
+            var newMessage = message.Replace(oldValue, newValue, StringComparison.OrdinalIgnoreCase);
             writer.Write(newMessage);
         }
     }
@@ -115,8 +115,7 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
         var exception = logEntry.Exception;
 
         // Example:
-        // info: WPFApp.Program[10]
-        //       Request received
+        // info: WPFApp.Program[10] Request received
 
         // category and event id
         textWriter.Write(LogLevelPadding);
@@ -143,9 +142,7 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
         WriteScopeInformation(textWriter, scopeProvider, singleLine);
         WriteMessage(textWriter, message, singleLine);
 
-        // Example:
-        // System.InvalidOperationException
-        //    at Namespace.Class.Function() in File:line X
+        // Example: System.InvalidOperationException at Namespace.Class.Function() in File:line X
         if (exception != null)
         {
             // exception message
@@ -166,19 +163,19 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
         var disableColors = FormatterOptions.ColorBehavior is LoggerColorBehavior.Disabled or LoggerColorBehavior.Default;
         if (disableColors)
         {
-            return new TextBlockColors(null, null);
+            return new TextBlockColors(Foreground: null, Background: null);
         }
 
         return logLevel switch
         {
-            LogLevel.Trace => new TextBlockColors(ConsoleColor.Gray, null),
-            LogLevel.Debug => new TextBlockColors(ConsoleColor.Gray, null),
-            LogLevel.Information => new TextBlockColors(ConsoleColor.DarkGreen, null),
-            LogLevel.Warning => new TextBlockColors(ConsoleColor.Yellow, null),
+            LogLevel.Trace => new TextBlockColors(ConsoleColor.Gray, Background: null),
+            LogLevel.Debug => new TextBlockColors(ConsoleColor.Gray, Background: null),
+            LogLevel.Information => new TextBlockColors(ConsoleColor.DarkGreen, Background: null),
+            LogLevel.Warning => new TextBlockColors(ConsoleColor.Yellow, Background: null),
             LogLevel.Error => new TextBlockColors(ConsoleColor.Black, ConsoleColor.DarkRed),
             LogLevel.Critical => new TextBlockColors(ConsoleColor.White, ConsoleColor.DarkRed),
-            LogLevel.None => new TextBlockColors(null, null),
-            _ => new TextBlockColors(null, null),
+            LogLevel.None => new TextBlockColors(Foreground: null, Background: null),
+            _ => new TextBlockColors(Foreground: null, Background: null),
         };
     }
 
@@ -216,5 +213,6 @@ internal sealed class SimpleTextBlockFormatter : TextBlockFormatter, IDisposable
         }
     }
 
+    [StructLayout(LayoutKind.Auto)]
     private record struct TextBlockColors(ConsoleColor? Foreground, ConsoleColor? Background);
 }

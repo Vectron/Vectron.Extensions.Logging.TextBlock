@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// An empty scope without any logic.
@@ -16,7 +14,7 @@ internal sealed class NullScope : IDisposable
     /// </summary>
     public static NullScope Instance { get; } = new NullScope();
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
     }

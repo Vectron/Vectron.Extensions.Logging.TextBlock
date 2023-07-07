@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// Determines the console logger behavior when the queue becomes full.

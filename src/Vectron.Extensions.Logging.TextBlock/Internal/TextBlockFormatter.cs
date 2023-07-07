@@ -1,9 +1,8 @@
-﻿using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// Allows custom log messages formatting.
@@ -30,7 +29,7 @@ public abstract class TextBlockFormatter
     /// </summary>
     /// <param name="logEntry">The log entry.</param>
     /// <param name="scopeProvider">The provider of scope data.</param>
-    /// <param name="textWriter">The string writer embedding ansi code for colors.</param>
+    /// <param name="textWriter">The string writer embedding ANSI code for colors.</param>
     /// <typeparam name="TState">The type of the object to be written.</typeparam>
     public abstract void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter);
 }

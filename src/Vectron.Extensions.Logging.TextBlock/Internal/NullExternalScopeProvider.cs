@@ -1,7 +1,6 @@
-﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// Scope provider that does nothing.
@@ -23,12 +22,12 @@ internal sealed class NullExternalScopeProvider : IExternalScopeProvider
         get;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     void IExternalScopeProvider.ForEachScope<TState>(Action<object?, TState> callback, TState state)
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     IDisposable IExternalScopeProvider.Push(object? state)
         => NullScope.Instance;
 }

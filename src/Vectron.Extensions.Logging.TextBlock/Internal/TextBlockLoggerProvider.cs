@@ -1,10 +1,8 @@
-﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// A <see cref="ILoggerProvider"/> for <see cref="TextBlockLogger"/>.
@@ -16,7 +14,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
     private readonly TextBlockLoggerProcessor messageQueue;
     private readonly IOptionsMonitor<TextBlockLoggerOptions> options;
     private readonly IDisposable? optionsReloadToken;
-    private ConcurrentDictionary<string, TextBlockFormatter> formatters = new();
+    private ConcurrentDictionary<string, TextBlockFormatter> formatters = new(StringComparer.Ordinal);
     private IExternalScopeProvider scopeProvider = NullExternalScopeProvider.Instance;
 
     /// <summary>
@@ -38,7 +36,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
     public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextBlockProvider textBlockProvider, IEnumerable<TextBlockFormatter> formatters)
     {
         this.options = options;
-        loggers = new ConcurrentDictionary<string, TextBlockLogger>();
+        loggers = new ConcurrentDictionary<string, TextBlockLogger>(StringComparer.Ordinal);
         SetFormatters(formatters);
         messageQueue = new TextBlockLoggerProcessor(
             textBlockProvider,
@@ -49,7 +47,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
         optionsReloadToken = options.OnChange(ReloadLoggerOptions);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ILogger CreateLogger(string name)
     {
         if (options.CurrentValue.FormatterName == null
@@ -63,14 +61,14 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
             : loggers.GetOrAdd(name, new TextBlockLogger(name, messageQueue, logFormatter, scopeProvider, options.CurrentValue));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
         optionsReloadToken?.Dispose();
         messageQueue.Dispose();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetScopeProvider(IExternalScopeProvider scopeProvider)
     {
         this.scopeProvider = scopeProvider;

@@ -1,9 +1,8 @@
-﻿using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// And <see cref="ILogger"/> implementation to log to a <see cref="System.Windows.Controls.TextBlock"/>.

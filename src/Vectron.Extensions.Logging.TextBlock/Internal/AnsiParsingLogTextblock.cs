@@ -1,24 +1,22 @@
-﻿using System;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
-/// An ansi string parser that writes to a <see cref="TextBlock"/>.
+/// An ANSI string parser that writes to a <see cref="TextBlock"/>.
 /// </summary>
 internal sealed class AnsiParsingLogTextBlock : ITextBlock
 {
     private readonly AnsiParser parser;
-    private readonly TextBlock textBlock;
+    private readonly System.Windows.Controls.TextBlock textBlock;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AnsiParsingLogTextBlock"/> class.
     /// </summary>
     /// <param name="textBlock">The textBlock we are writing to.</param>
     /// <param name="maxMessages">Maximum number of messages to display in the <see cref="TextBlock"/>.</param>
-    public AnsiParsingLogTextBlock(TextBlock textBlock, int maxMessages)
+    public AnsiParsingLogTextBlock(System.Windows.Controls.TextBlock textBlock, int maxMessages)
     {
         this.textBlock = textBlock;
         MaxMessages = maxMessages;

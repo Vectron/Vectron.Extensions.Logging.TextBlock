@@ -1,7 +1,6 @@
-﻿using System;
 using System.IO;
 
-namespace VectronsLibrary.TextBlockLogger.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
 /// <summary>
 /// <see cref="TextWriter"/> extension methods.
@@ -9,7 +8,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal;
 internal static class TextWriterExtensions
 {
     /// <summary>
-    /// Write an ansi colored string.
+    /// Write an ANSI colored string.
     /// </summary>
     /// <param name="textWriter">The <see cref="TextWriter"/> to write to.</param>
     /// <param name="message">The message to write.</param>
@@ -17,7 +16,8 @@ internal static class TextWriterExtensions
     /// <param name="foreground">The foreground color.</param>
     public static void WriteColoredMessage(this TextWriter textWriter, string message, ConsoleColor? background, ConsoleColor? foreground)
     {
-        // Order: background color, foreground color, Message, reset foreground color, reset background color
+        // Order: background color, foreground color, Message, reset foreground color, reset
+        // background color
         if (background.HasValue)
         {
             textWriter.Write(AnsiParser.GetBackgroundColorEscapeCode(background.Value));

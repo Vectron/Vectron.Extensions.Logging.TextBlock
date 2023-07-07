@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
-using VectronsLibrary.TextBlockLogger.Internal;
+using Vectron.Extensions.Logging.TextBlock.Internal;
 
-namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// A class for configuring <see cref="TextBlockFormatterOptions"/> instances.
@@ -14,7 +14,8 @@ internal sealed class TextBlockLoggerFormatterConfigureOptions<TFormatter, TOpti
     where TFormatter : TextBlockFormatter
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="TextBlockLoggerFormatterConfigureOptions{TFormatter, TOptions}"/> class.
+    /// Initializes a new instance of the
+    /// <see cref="TextBlockLoggerFormatterConfigureOptions{TFormatter, TOptions}"/> class.
     /// </summary>
     /// <param name="providerConfiguration"><see cref="ILoggerProviderConfiguration{T}"/>.</param>
     public TextBlockLoggerFormatterConfigureOptions(ILoggerProviderConfiguration<TextBlockLoggerProvider> providerConfiguration)

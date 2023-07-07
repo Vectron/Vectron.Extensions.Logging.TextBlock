@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// Options for the built-in default text block formatter.

@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace VectronsLibrary.TextBlockLogger;
+namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
 /// Represents A <see cref="TextBlock"/> we can write string to.
