@@ -90,7 +90,6 @@ jobs:
         /p:Version=${{ env.NBGV_SemVer2 }}
         --output ./bin/Pack/
     - name: Setup github remotes
-      if: runner.os == 'Windows'
       run: >
         dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         --username ${{ github.repository_owner }}
