@@ -19,14 +19,14 @@ env:
   SOLUTION_FILE: Vectron.Extensions.Logging.TextBlock.sln
 jobs:
   call-build-test:
-    uses: Vectron/GithubWorkflows/tree/main/.github/workflows/BuildAndTest.yml@main
+    uses: Vectron/GithubWorkflows/.github/workflows/BuildAndTest.yml@main
     with:
       os: windows-latest
       dotnet_version: 7.0.x
       solution_file: ${{ env.SOLUTION_FILE }}
 
   call-deploy:
-    uses: Vectron/GithubWorkflows/tree/main/.github/workflows/DeployNugetGithub.yml@main
+    uses: Vectron/GithubWorkflows/.github/workflows/DeployNugetGithub.yml@main
     with:
       os: windows-latest
       dotnet_version: 7.0.x
@@ -36,4 +36,4 @@ jobs:
       
 
   call-release:
-    uses: Vectron/GithubWorkflows/tree/main/.github/workflows/CreateRelease.yml@main
+    uses: Vectron/GithubWorkflows/.github/workflows/CreateRelease.yml@main
