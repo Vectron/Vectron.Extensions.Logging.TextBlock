@@ -15,25 +15,25 @@ on:
       - 'LICENSE.txt'
       - 'README.md'
 
-env:
-  SOLUTION_FILE: Vectron.Extensions.Logging.TextBlock.sln
 jobs:
   call-build-test:
     uses: Vectron/GithubWorkflows/.github/workflows/BuildAndTest.yml@main
     with:
       os: windows-latest
       dotnet_version: 7.0.x
-      solution_file: ${{ env.SOLUTION_FILE }}
+      solution_file: Vectron.Extensions.Logging.TextBlock.sln
 
   call-deploy:
+    needs: call-build-test
     uses: Vectron/GithubWorkflows/.github/workflows/DeployNugetGithub.yml@main
     with:
       os: windows-latest
       dotnet_version: 7.0.x
-      solution_file: ${{ env.SOLUTION_FILE }}
+      solution_file: Vectron.Extensions.Logging.TextBlock.sln
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
       
 
   call-release:
+    needs: call-build-test
     uses: Vectron/GithubWorkflows/.github/workflows/CreateRelease.yml@main
