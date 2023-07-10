@@ -25,6 +25,8 @@ jobs:
 
   call-deploy:
     needs: call-build-test
+    permissions:
+      packages: write
     uses: Vectron/GithubWorkflows/.github/workflows/DeployNugetGithub.yml@main
     with:
       os: windows-latest
@@ -36,4 +38,7 @@ jobs:
 
   call-release:
     needs: call-build-test
+    permissions:
+      deployments: write
+      contents: write
     uses: Vectron/GithubWorkflows/.github/workflows/CreateRelease.yml@main
