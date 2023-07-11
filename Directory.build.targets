@@ -1,8 +1,8 @@
-﻿<Project>
+<Project>
   <!--workaround for strange wpftmp folders https://github.com/dotnet/wpf/issues/2930-->
   <Target Name="RemoveWpfTemp" AfterTargets="Build">
     <ItemGroup>
-      <WpfTempDirectories Include="$([System.IO.Directory]::GetDirectories(&quot;$(BaseOutputPath)&quot;,&quot;$(MSBuildProjectName)_*_wpftmp&quot;))"/>
+      <WpfTempDirectories Include="$([System.IO.Directory]::GetDirectories('$(RepositoryRootDirectory)bin\$(Configuration)','$(MSBuildProjectName)_*_wpftmp'))" />
     </ItemGroup>
     <RemoveDir Directories="@(WpfTempDirectories)" />
   </Target>
