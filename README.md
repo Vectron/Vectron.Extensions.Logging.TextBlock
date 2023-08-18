@@ -5,5 +5,28 @@
 
 Vectron.Extensions.Logging.TextBlock provides a WPF TextBlock logger provider implementation for Microsoft.Extensions.Logging.
 
+To mark a TextBlock as the logger target you can use a behavior.
+In the next example the TextBlock will be used to display the logs.
+```xml
+<Window
+    x:Class="LogExample.Wpf.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:textblockLogging="clr-namespace:Vectron.Extensions.Logging.TextBlock;assembly=Vectron.Extensions.Logging.TextBlock"
+    Title="Logging example"
+    mc:Ignorable="d">
+    <DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TextBlock
+                textblockLogging:TextblockLoggerBehavior.LoggerTarget="True"
+                DockPanel.Dock="Bottom" />
+        </ScrollViewer>
+    </DockPanel>
+</Window>
+```
+
+
 ## Authors
 - [@Vectron](https://www.github.com/Vectron)
