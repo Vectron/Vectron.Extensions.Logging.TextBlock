@@ -9,4 +9,9 @@ internal static class TextBlockFormatterNames
     /// Reserved name for simple text block formatter.
     /// </summary>
     public const string Simple = "simple";
+
+    /// <summary>
+    /// Reserved name for single line text block formatter.
+    /// </summary>
+    public const string Themed = "themed";
 }

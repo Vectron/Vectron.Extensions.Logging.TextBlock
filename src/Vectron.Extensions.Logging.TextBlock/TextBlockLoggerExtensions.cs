@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 using Vectron.Extensions.Logging.TextBlock.Internal;
+using Vectron.Extensions.Logging.TextBlock.Themes;
 
 namespace Vectron.Extensions.Logging.TextBlock;
 
@@ -60,9 +61,16 @@ public static class TextBlockLoggerExtensions
     {
         builder.AddConfiguration();
         _ = builder.AddTextBlockFormatter<SimpleTextBlockFormatter, SimpleTextBlockFormatterOptions>();
+        _ = builder.AddTextBlockFormatter<ThemedTextBlockFormatter, ThemedTextBlockFormatterOptions>();
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, TextBlockLoggerProvider>());
         LoggerProviderOptions.RegisterProviderOptions<TextBlockLoggerOptions, TextBlockLoggerProvider>(builder.Services);
         _ = builder.Services.AddSingleton<ITextBlockProvider, TextBlockProvider>();
+
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, NoColorTheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, MELTheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, NLogTheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, SerilogTheme>());
+        builder.Services.TryAddSingleton<IThemeProvider, ThemeProvider>();
         return builder;
     }
 
@@ -115,6 +123,26 @@ public static class TextBlockLoggerExtensions
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<TOptions>, TextBlockLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions>>());
         return builder;
     }
+
+    /// <summary>
+    /// Add the TextBlock log formatter named 'themed' to the factory with default properties.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> for chaining.</returns>
+    public static ILoggingBuilder AddThemedTextBlock(this ILoggingBuilder builder)
+        => builder.AddFormatterWithName(TextBlockFormatterNames.Themed);
+
+    /// <summary>
+    /// Add and configure a TextBlock log formatter named 'themed' to the factory.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <param name="configure">
+    /// A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in default
+    /// log formatter.
+    /// </param>
+    /// <returns>The <see cref="ILoggingBuilder"/> for chaining.</returns>
+    public static ILoggingBuilder AddThemedTextBlock(this ILoggingBuilder builder, Action<ThemedTextBlockFormatterOptions> configure)
+        => builder.AddTextBlockWithFormatter(TextBlockFormatterNames.Themed, configure);
 
     /// <summary>
     /// Add a text block logger with a named formatter.
