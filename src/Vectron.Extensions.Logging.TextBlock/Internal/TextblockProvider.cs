@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using Microsoft.Extensions.Options;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
@@ -29,17 +30,18 @@ internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
 
     /// <inheritdoc/>
     public void AddTextBlock(System.Windows.Controls.TextBlock textBlock)
-    {
-        var closeMenuItem = new MenuItem()
+        => Dispatcher.CurrentDispatcher.Invoke(() =>
         {
-            Header = "Clear",
-        };
-        closeMenuItem.Click += (o, e) => textBlock.Inlines.Clear();
-        textBlock.ContextMenu ??= new ContextMenu();
-        _ = textBlock.ContextMenu.Items.Add(closeMenuItem);
-        textBlock.Unloaded += TextBlock_Unloaded;
-        _ = sinks.TryAdd(textBlock, new AnsiParsingLogTextBlock(textBlock, options.CurrentValue.MaxMessages));
-    }
+            var closeMenuItem = new MenuItem()
+            {
+                Header = "Clear",
+            };
+            closeMenuItem.Click += (o, e) => textBlock.Inlines.Clear();
+            textBlock.ContextMenu ??= new ContextMenu();
+            _ = textBlock.ContextMenu.Items.Add(closeMenuItem);
+            textBlock.Unloaded += TextBlock_Unloaded;
+            _ = sinks.TryAdd(textBlock, new AnsiParsingLogTextBlock(textBlock, options.CurrentValue.MaxMessages));
+        });
 
     /// <inheritdoc/>
     public void Dispose()
