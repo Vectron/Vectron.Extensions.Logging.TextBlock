@@ -36,6 +36,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
     public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextBlockProvider textBlockProvider, IEnumerable<TextBlockFormatter> formatters)
     {
         this.options = options;
+        TextBlockLoggerBehavior.TextBlockProvider = textBlockProvider;
         loggers = new ConcurrentDictionary<string, TextBlockLogger>(StringComparer.Ordinal);
         SetFormatters(formatters);
         messageQueue = new TextBlockLoggerProcessor(
