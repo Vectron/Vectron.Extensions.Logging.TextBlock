@@ -84,7 +84,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
             LogLevel.Warning => "WARN",
             LogLevel.Error => "FAIL",
             LogLevel.Critical => "CRIT",
-            LogLevel.None => throw new ArgumentOutOfRangeException(nameof(logLevel)),
+            LogLevel.None => string.Empty,
             _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
         };
 
@@ -173,11 +173,6 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
     private void WriteLogLevel(LogLevel logLevel, TextWriter textWriter)
     {
         var logLevelString = GetLogLevelString(logLevel);
-        if (logLevelString == null)
-        {
-            return;
-        }
-
         var color = themeProvider.GetLogLevelColor(logLevel);
         textWriter.WriteColored(color, logLevelString, FormatterOptions.ColorWholeLine);
         textWriter.Write(LogLevelPadding);
