@@ -9,11 +9,6 @@ namespace Vectron.Extensions.Logging.TextBlock.Internal;
 /// </summary>
 internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
 {
-    private readonly MenuItem closeMenuItem = new()
-    {
-        Header = "Clear",
-    };
-
     private readonly IOptionsMonitor<TextBlockLoggerOptions> options;
     private readonly IDisposable? optionsReloadToken;
     private readonly ConcurrentDictionary<System.Windows.Controls.TextBlock, ITextBlock> sinks = new();
@@ -35,6 +30,10 @@ internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
     /// <inheritdoc/>
     public void AddTextBlock(System.Windows.Controls.TextBlock textBlock)
     {
+        var closeMenuItem = new MenuItem()
+        {
+            Header = "Clear",
+        };
         closeMenuItem.Click += (o, e) => textBlock.Inlines.Clear();
         textBlock.ContextMenu ??= new ContextMenu();
         _ = textBlock.ContextMenu.Items.Add(closeMenuItem);
