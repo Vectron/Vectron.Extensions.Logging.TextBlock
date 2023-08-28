@@ -1,3 +1,4 @@
+using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
 
 namespace Vectron.Extensions.Logging.TextBlock;
@@ -25,6 +26,14 @@ public class TextBlockLoggerBehavior : Behavior<System.Windows.Controls.TextBloc
             return;
         }
 
+        var closeMenuItem = new MenuItem()
+        {
+            Header = "Clear",
+        };
+
+        closeMenuItem.Click += CloseMenuItem_Click;
+        AssociatedObject.ContextMenu ??= new ContextMenu();
+        _ = AssociatedObject.ContextMenu.Items.Add(closeMenuItem);
         TextBlockProvider.AddTextBlock(AssociatedObject);
     }
 
@@ -39,4 +48,7 @@ public class TextBlockLoggerBehavior : Behavior<System.Windows.Controls.TextBloc
 
         TextBlockProvider.RemoveTextBlock(AssociatedObject);
     }
+
+    private void CloseMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        => AssociatedObject.Inlines.Clear();
 }
