@@ -43,7 +43,7 @@ internal sealed class AnsiParsingTextBlock : ITextBlock
                 var (foregroundRed, foregroundGreen, foregroundBlue) = parsedStyle.ConvertForegroundColorToRGB();
                 var foregroundBrush = parsedStyle.HasForegroundColor
                     ? new SolidColorBrush(Color.FromRgb((byte)foregroundRed, (byte)foregroundGreen, (byte)foregroundBlue))
-                    : null;
+                    : Brushes.Black;
 
                 var (backgroundRed, backgroundGreen, backgroundBlue) = parsedStyle.ConvertBackgroundColorToRGB();
                 var backgroundBrush = parsedStyle.HasBackgroundColor
