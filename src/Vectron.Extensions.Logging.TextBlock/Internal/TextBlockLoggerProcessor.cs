@@ -29,11 +29,11 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
         MaxQueueLength = maxQueueLength;
         this.textBlockProvider = textBlockProvider;
 
-        // Start Console message queue processor
+        // Start Text block message queue processor
         outputThread = new Thread(ProcessLogQueue)
         {
             IsBackground = true,
-            Name = "Console logger queue processing thread",
+            Name = "TextBlock logger queue processing thread",
         };
         outputThread.Start();
     }
