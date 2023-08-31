@@ -26,12 +26,12 @@ internal sealed class NLogTheme : ITheme
     public string GetLogLevelColor(LogLevel logLevel)
         => logLevel switch
         {
-            LogLevel.Trace => "\u001b[90m\u001b[40m",
-            LogLevel.Debug => "\u001b[37m\u001b[40m",
-            LogLevel.Information => "\u001b[97m\u001b[40m",
-            LogLevel.Warning => "\u001b[95m\u001b[40m",
-            LogLevel.Error => "\u001b[93m\u001b[40m",
-            LogLevel.Critical => "\u001b[91m\u001b[40m",
+            LogLevel.Trace => "\x1b[90m\x1b[40m",
+            LogLevel.Debug => "\x1b[37m\x1b[40m",
+            LogLevel.Information => "\x1b[97m\x1b[40m",
+            LogLevel.Warning => "\x1b[95m\x1b[40m",
+            LogLevel.Error => "\x1b[93m\x1b[40m",
+            LogLevel.Critical => "\x1b[91m\x1b[40m",
             LogLevel.None => string.Empty,
             _ => string.Empty,
         };

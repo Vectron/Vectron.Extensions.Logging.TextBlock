@@ -26,12 +26,12 @@ internal sealed class SerilogTheme : ITheme
     public string GetLogLevelColor(LogLevel logLevel)
         => logLevel switch
         {
-            LogLevel.Trace => "\u001b[38;5;0007m\u001b[40m",
-            LogLevel.Debug => "\u001b[38;5;0007m\u001b[40m",
-            LogLevel.Information => "\u001b[38;5;0015m\u001b[40m",
-            LogLevel.Warning => "\u001b[38;5;0011m\u001b[40m",
-            LogLevel.Error => "\u001b[38;5;0015m\u001b[48;5;0196m",
-            LogLevel.Critical => "\u001b[38;5;0015m\u001b[48;5;0196m",
+            LogLevel.Trace => "\x1b[38;5;0007m\x1b[40m",
+            LogLevel.Debug => "\x1b[38;5;0007m\x1b[40m",
+            LogLevel.Information => "\x1b[38;5;0015m\x1b[40m",
+            LogLevel.Warning => "\x1b[38;5;0011m\x1b[40m",
+            LogLevel.Error => "\x1b[38;5;0015m\x1b[48;5;0196m",
+            LogLevel.Critical => "\x1b[38;5;0015m\x1b[48;5;0196m",
             LogLevel.None => string.Empty,
             _ => string.Empty,
         };

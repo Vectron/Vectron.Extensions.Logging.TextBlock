@@ -26,12 +26,12 @@ internal sealed class MELTheme : ITheme
     public string GetLogLevelColor(LogLevel logLevel)
         => logLevel switch
         {
-            LogLevel.Trace => "\u001b[37m\u001b[40m",
-            LogLevel.Debug => "\u001b[37m\u001b[40m",
-            LogLevel.Information => "\u001b[32m\u001b[40m",
-            LogLevel.Warning => "\u001b[1m\u001b[33m\u001b[40m",
-            LogLevel.Error => "\u001b[30m\u001b[41m",
-            LogLevel.Critical => "\u001b[1m\u001b[37m\u001b[41m",
+            LogLevel.Trace => "\x1b[37m\x1b[40m",
+            LogLevel.Debug => "\x1b[37m\x1b[40m",
+            LogLevel.Information => "\x1b[32m\x1b[40m",
+            LogLevel.Warning => "\x1b[1m\x1b[33m\x1b[40m",
+            LogLevel.Error => "\x1b[30m\x1b[41m",
+            LogLevel.Critical => "\x1b[1m\x1b[37m\x1b[41m",
             LogLevel.None => string.Empty,
             _ => string.Empty,
         };
