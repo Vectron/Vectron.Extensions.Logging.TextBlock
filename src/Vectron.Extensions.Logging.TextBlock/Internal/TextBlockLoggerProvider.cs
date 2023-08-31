@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Vectron.Extensions.Logging.TextBlock.Themes;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
@@ -54,7 +55,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
         if (options.CurrentValue.FormatterName == null
             || !formatters.TryGetValue(options.CurrentValue.FormatterName, out var logFormatter))
         {
-            logFormatter = formatters[TextBlockFormatterNames.Simple];
+            logFormatter = formatters[TextBlockFormatterNames.Themed];
         }
 
         return loggers.TryGetValue(name, out var logger)
@@ -85,7 +86,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
         if (options.FormatterName == null
             || !formatters.TryGetValue(options.FormatterName, out var logFormatter))
         {
-            logFormatter = formatters[TextBlockFormatterNames.Simple];
+            logFormatter = formatters[TextBlockFormatterNames.Themed];
         }
 
         messageQueue.FullMode = options.QueueFullMode;
@@ -113,9 +114,46 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
 
         if (!added)
         {
-            _ = cd.TryAdd(TextBlockFormatterNames.Simple, new SimpleTextBlockFormatter(new FormatterOptionsMonitor<SimpleTextBlockFormatterOptions>(new SimpleTextBlockFormatterOptions())));
+            var formatterOptions = new ThemedTextBlockFormatterOptions();
+            var formatterOptionsMonitor = new FormatterOptionsMonitor<ThemedTextBlockFormatterOptions>(formatterOptions);
+            var themeProvider = new DefaultThemeProvider();
+            var formatter = new ThemedTextBlockFormatter(formatterOptionsMonitor, themeProvider);
+
+            _ = cd.TryAdd(TextBlockFormatterNames.Themed, formatter);
         }
 
         this.formatters = cd;
+    }
+
+    private sealed class DefaultThemeProvider : IThemeProvider
+    {
+        private readonly ITheme currentTheme = new MELTheme();
+
+        /// <inheritdoc/>
+        string ITheme.Name => string.Empty;
+
+        /// <inheritdoc/>
+        public string GetCategoryColor(string category) => currentTheme.GetCategoryColor(category);
+
+        /// <inheritdoc/>
+        public string GetEventIdColor(EventId eventId) => currentTheme.GetEventIdColor(eventId);
+
+        /// <inheritdoc/>
+        public string GetExceptionColor(Exception exception) => currentTheme.GetExceptionColor(exception);
+
+        /// <inheritdoc/>
+        public string GetLineColor(LogLevel logLevel) => currentTheme.GetLineColor(logLevel);
+
+        /// <inheritdoc/>
+        public string GetLogLevelColor(LogLevel logLevel) => currentTheme.GetLogLevelColor(logLevel);
+
+        /// <inheritdoc/>
+        public string GetMessageColor(string message) => currentTheme.GetMessageColor(message);
+
+        /// <inheritdoc/>
+        public string GetScopeColor(object? scope) => currentTheme.GetScopeColor(scope);
+
+        /// <inheritdoc/>
+        public string GetTimeColor(DateTimeOffset dateTimeOffset) => currentTheme.GetTimeColor(dateTimeOffset);
     }
 }
