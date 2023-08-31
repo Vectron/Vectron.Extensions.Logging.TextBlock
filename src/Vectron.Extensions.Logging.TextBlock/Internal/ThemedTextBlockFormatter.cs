@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using Vectron.Ansi;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
@@ -69,7 +70,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         WriteException(textWriter, logEntry.Exception);
         if (FormatterOptions.ColorWholeLine)
         {
-            textWriter.WriteResetColor();
+            textWriter.WriteResetColorAndStyle();
         }
 
         textWriter.WriteLine();
@@ -122,8 +123,14 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
             return;
         }
 
+        if (FormatterOptions.ColorWholeLine)
+        {
+            textWriter.Write(category);
+            return;
+        }
+
         var color = themeProvider.GetCategoryColor(category);
-        textWriter.WriteColored(color, category, FormatterOptions.ColorWholeLine);
+        textWriter.Write(color + category + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
     }
 
     private void WriteEventId(EventId eventId, TextWriter textWriter)
@@ -151,7 +158,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
 
         if (!FormatterOptions.ColorWholeLine && !string.IsNullOrEmpty(color))
         {
-            textWriter.WriteResetColor();
+            textWriter.WriteResetColorAndStyle();
         }
 
         textWriter.Write(' ');
@@ -166,15 +173,30 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
 
         textWriter.Write(NewLineWithMessagePadding);
         var message = exception.ToString().Replace(Environment.NewLine, NewLineWithMessagePadding, StringComparison.Ordinal);
+
+        if (FormatterOptions.ColorWholeLine)
+        {
+            textWriter.Write(message);
+            return;
+        }
+
         var color = themeProvider.GetExceptionColor(exception);
-        textWriter.WriteColored(color, message, FormatterOptions.ColorWholeLine);
+        textWriter.Write(color + message + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
     }
 
     private void WriteLogLevel(LogLevel logLevel, TextWriter textWriter)
     {
         var logLevelString = GetLogLevelString(logLevel);
-        var color = themeProvider.GetLogLevelColor(logLevel);
-        textWriter.WriteColored(color, logLevelString, FormatterOptions.ColorWholeLine);
+        if (FormatterOptions.ColorWholeLine)
+        {
+            textWriter.Write(logLevelString);
+        }
+        else
+        {
+            var color = themeProvider.GetLogLevelColor(logLevel);
+            textWriter.Write(color + logLevelString + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+        }
+
         textWriter.Write(LogLevelPadding);
     }
 
@@ -186,8 +208,14 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         }
 
         var newMessage = message.Replace(Environment.NewLine, NewLineWithMessagePadding, StringComparison.Ordinal);
+        if (FormatterOptions.ColorWholeLine)
+        {
+            textWriter.Write(newMessage);
+            return;
+        }
+
         var color = themeProvider.GetMessageColor(newMessage);
-        textWriter.WriteColored(color, newMessage, FormatterOptions.ColorWholeLine);
+        textWriter.Write(color + newMessage + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
     }
 
     private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider? scopeProvider)
@@ -202,7 +230,16 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
             {
                 var color = themeProvider.GetScopeColor(scope);
                 state.Write("=> ");
-                state.WriteColored(color, scope, FormatterOptions.ColorWholeLine);
+
+                if (FormatterOptions.ColorWholeLine)
+                {
+                    textWriter.Write(scope);
+                }
+                else
+                {
+                    textWriter.Write(color + scope + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+                }
+
                 textWriter.Write(' ');
             },
             textWriter);
@@ -219,8 +256,16 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         var dateTimeOffset = GetCurrentDateTime();
         var timestamp = dateTimeOffset.ToString(timestampFormat, CultureInfo.CurrentCulture);
 
-        var color = themeProvider.GetTimeColor(dateTimeOffset);
-        textWriter.WriteColored(color, timestamp, FormatterOptions.ColorWholeLine);
+        if (FormatterOptions.ColorWholeLine)
+        {
+            textWriter.Write(timestamp);
+        }
+        else
+        {
+            var color = themeProvider.GetTimeColor(dateTimeOffset);
+            textWriter.Write(color + timestamp + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+        }
+
         textWriter.Write(' ');
     }
 }

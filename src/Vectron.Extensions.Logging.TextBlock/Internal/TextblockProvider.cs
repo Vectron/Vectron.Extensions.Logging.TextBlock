@@ -28,7 +28,7 @@ internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
 
     /// <inheritdoc/>
     public void AddTextBlock(System.Windows.Controls.TextBlock textBlock)
-        => sinks.TryAdd(textBlock, new AnsiParsingLogTextBlock(textBlock, options.CurrentValue.MaxMessages));
+        => sinks.TryAdd(textBlock, new AnsiParsingTextBlock(textBlock, options.CurrentValue.MaxMessages));
 
     /// <inheritdoc/>
     public void Dispose()
