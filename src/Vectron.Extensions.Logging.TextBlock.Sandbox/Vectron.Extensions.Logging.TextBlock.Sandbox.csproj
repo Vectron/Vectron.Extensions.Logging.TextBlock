@@ -13,8 +13,8 @@
     <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0457" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-    <PackageReference Include="Vectron.Extensions.Hosting.Wpf" Version="0.0.26-gd7de71cf08" />
-    <PackageReference Include="Vectron.Library.Wpf" Version="4.0.24-g350658446a" />
+    <PackageReference Include="Vectron.Extensions.Hosting.Wpf" Version="0.0.26" />
+    <PackageReference Include="Vectron.Library.Wpf" Version="4.0.24" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
   </ItemGroup>
 
