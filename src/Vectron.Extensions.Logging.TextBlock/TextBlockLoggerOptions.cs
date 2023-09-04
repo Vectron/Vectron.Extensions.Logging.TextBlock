@@ -27,11 +27,7 @@ public class TextBlockLoggerOptions
     /// <summary>
     /// Gets or sets the max number of messages to keep in the <see cref="System.Windows.Controls.TextBlock"/>.
     /// </summary>
-    public int MaxMessages
-    {
-        get;
-        set;
-    }
+    public int MaxMessages { get; set; } = 100;
 
     /// <summary>
     /// Gets or sets the maximum number of enqueued messages. Defaults to 2500.
