@@ -5,19 +5,19 @@ namespace Vectron.Extensions.Logging.TextBlock.Themes;
 /// <summary>
 /// A <see cref="ITheme"/> that uses the Microsoft.Extensions.Logging.Console colors.
 /// </summary>
-internal sealed class NLogTheme : ITheme
+internal sealed class NLogDarkTheme : ITheme
 {
     /// <inheritdoc/>
-    public string Name => "NLog";
+    public string Name => "NLog-Dark";
 
     /// <inheritdoc/>
-    public string GetCategoryColor(string category) => string.Empty;
+    public string GetCategoryColor(string category) => "\x1b[1;37m";
 
     /// <inheritdoc/>
-    public string GetEventIdColor(EventId eventId) => string.Empty;
+    public string GetEventIdColor(EventId eventId) => "\x1b[1;37m";
 
     /// <inheritdoc/>
-    public string GetExceptionColor(Exception exception) => string.Empty;
+    public string GetExceptionColor(Exception exception) => "\x1b[1;37m";
 
     /// <inheritdoc/>
     public string GetLineColor(LogLevel logLevel) => GetLogLevelColor(logLevel);
@@ -37,11 +37,11 @@ internal sealed class NLogTheme : ITheme
         };
 
     /// <inheritdoc/>
-    public string GetMessageColor(string message) => string.Empty;
+    public string GetMessageColor(string message) => "\x1b[1;37m";
 
     /// <inheritdoc/>
-    public string GetScopeColor(object? scope) => string.Empty;
+    public string GetScopeColor(object? scope) => "\x1b[1;37m";
 
     /// <inheritdoc/>
-    public string GetTimeColor(DateTimeOffset dateTimeOffset) => string.Empty;
+    public string GetTimeColor(DateTimeOffset dateTimeOffset) => "\x1b[1;37m";
 }

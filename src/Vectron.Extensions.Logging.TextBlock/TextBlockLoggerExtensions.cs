@@ -47,8 +47,11 @@ public static class TextBlockLoggerExtensions
 
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, NoColorTheme>());
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, MELTheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, MELDarkTheme>());
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, NLogTheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, NLogDarkTheme>());
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, SerilogTheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ITheme, SerilogDarkTheme>());
         builder.Services.TryAddSingleton<IThemeProvider, ThemeProvider>();
         return builder;
     }
