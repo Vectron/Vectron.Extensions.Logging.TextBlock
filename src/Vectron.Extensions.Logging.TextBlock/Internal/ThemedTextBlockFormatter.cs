@@ -130,7 +130,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         }
 
         var color = themeProvider.GetCategoryColor(category);
-        textWriter.Write(color + category + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+        textWriter.WriteEscaped(color, category);
     }
 
     private void WriteEventId(EventId eventId, TextWriter textWriter)
@@ -181,7 +181,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         }
 
         var color = themeProvider.GetExceptionColor(exception);
-        textWriter.Write(color + message + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+        textWriter.WriteEscaped(color, message);
     }
 
     private void WriteLogLevel(LogLevel logLevel, TextWriter textWriter)
@@ -194,7 +194,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         else
         {
             var color = themeProvider.GetLogLevelColor(logLevel);
-            textWriter.Write(color + logLevelString + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+            textWriter.WriteEscaped(color, logLevelString);
         }
 
         textWriter.Write(LogLevelPadding);
@@ -215,7 +215,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         }
 
         var color = themeProvider.GetMessageColor(newMessage);
-        textWriter.Write(color + newMessage + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+        textWriter.WriteEscaped(color, newMessage);
     }
 
     private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider? scopeProvider)
@@ -237,7 +237,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
                 }
                 else
                 {
-                    textWriter.Write(color + scope + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+                    textWriter.WriteEscaped(color, scope?.ToString() ?? string.Empty);
                 }
 
                 textWriter.Write(' ');
@@ -263,7 +263,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
         else
         {
             var color = themeProvider.GetTimeColor(dateTimeOffset);
-            textWriter.Write(color + timestamp + AnsiHelper.ResetColorAndStyleAnsiEscapeCode);
+            textWriter.WriteEscaped(color, timestamp);
         }
 
         textWriter.Write(' ');
