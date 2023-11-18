@@ -22,11 +22,7 @@ public static class TextBlockLoggerExtensions
     /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
     public static ILoggingBuilder AddTextBlock(this ILoggingBuilder builder, Action<TextBlockLoggerOptions> configure)
     {
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-
+        ArgumentNullException.ThrowIfNull(configure);
         _ = builder.AddTextBlock();
         _ = builder.Services.Configure(configure);
         return builder;
@@ -74,11 +70,7 @@ public static class TextBlockLoggerExtensions
         where TOptions : TextBlockFormatterOptions
         where TFormatter : TextBlockFormatter
     {
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-
+        ArgumentNullException.ThrowIfNull(configure);
         _ = builder.AddTextBlockFormatter<TFormatter, TOptions>();
         _ = builder.Services.Configure(configure);
         return builder;
@@ -141,11 +133,7 @@ public static class TextBlockLoggerExtensions
     internal static ILoggingBuilder AddTextBlockWithFormatter<TOptions>(this ILoggingBuilder builder, string name, Action<TOptions> configure)
         where TOptions : TextBlockFormatterOptions
     {
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-
+        ArgumentNullException.ThrowIfNull(configure);
         _ = builder.AddFormatterWithName(name);
         _ = builder.Services.Configure(configure);
 

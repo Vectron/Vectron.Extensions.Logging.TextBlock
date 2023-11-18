@@ -3,20 +3,14 @@ namespace Vectron.Extensions.Logging.TextBlock.Internal;
 /// <summary>
 /// A container for a parsed log message.
 /// </summary>
-internal readonly struct LogMessageEntry
+/// <remarks>
+/// Initializes a new instance of the <see cref="LogMessageEntry"/> struct.
+/// </remarks>
+/// <param name="message">The formatted message.</param>
+internal readonly struct LogMessageEntry(string message)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LogMessageEntry"/> struct.
-    /// </summary>
-    /// <param name="message">The formatted message.</param>
-    public LogMessageEntry(string message)
-        => Message = message ?? throw new ArgumentNullException(nameof(message));
-
     /// <summary>
     /// Gets the formatted message.
     /// </summary>
-    public string Message
-    {
-        get;
-    }
+    public string Message => message ?? throw new ArgumentNullException(nameof(message));
 }

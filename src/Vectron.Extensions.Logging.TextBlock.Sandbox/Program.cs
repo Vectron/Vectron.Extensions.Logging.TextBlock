@@ -9,14 +9,14 @@ var builder = Host.CreateApplicationBuilder(args);
 
 var settings = new List<KeyValuePair<string, string?>>
 {
-    new KeyValuePair<string, string?>("Logging:TextBlock:FormatterName", "Themed"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:LogLevel:Default", "Trace"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:MaxMessages", "1000"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:FormatterOptions:ColorWholeLine", "false"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:FormatterOptions:Theme", "MEL"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:FormatterOptions:IncludeScopes", "true"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:FormatterOptions:TimestampFormat", "HH:mm:ss"),
-    new KeyValuePair<string, string?>("Logging:TextBlock:FormatterOptions:UseUtcTimestamp", "false"),
+    new("Logging:TextBlock:FormatterName", "Themed"),
+    new("Logging:TextBlock:LogLevel:Default", "Trace"),
+    new("Logging:TextBlock:MaxMessages", "1000"),
+    new("Logging:TextBlock:FormatterOptions:ColorWholeLine", "false"),
+    new("Logging:TextBlock:FormatterOptions:Theme", "MEL"),
+    new("Logging:TextBlock:FormatterOptions:IncludeScopes", "true"),
+    new("Logging:TextBlock:FormatterOptions:TimestampFormat", "HH:mm:ss"),
+    new("Logging:TextBlock:FormatterOptions:UseUtcTimestamp", "false"),
 };
 
 var configBuilder = builder.Configuration as IConfigurationBuilder;

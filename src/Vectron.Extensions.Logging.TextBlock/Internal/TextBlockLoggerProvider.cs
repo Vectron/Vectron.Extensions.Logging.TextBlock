@@ -127,7 +127,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
 
     private sealed class DefaultThemeProvider : IThemeProvider
     {
-        private readonly ITheme currentTheme = new MELTheme();
+        private readonly MELTheme currentTheme = new();
 
         /// <inheritdoc/>
         string ITheme.Name => string.Empty;

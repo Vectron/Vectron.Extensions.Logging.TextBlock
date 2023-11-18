@@ -82,11 +82,7 @@ internal sealed class TextBlockLogger : ILogger
             return;
         }
 
-        if (formatter == null)
-        {
-            throw new ArgumentNullException(nameof(formatter));
-        }
-
+        ArgumentNullException.ThrowIfNull(formatter);
         stringWriter ??= new StringWriter();
         var logEntry = new LogEntry<TState>(logLevel, name, eventId, state, exception, formatter);
         Formatter.Write(in logEntry, ScopeProvider, stringWriter);
