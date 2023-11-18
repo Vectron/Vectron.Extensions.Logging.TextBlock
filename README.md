@@ -18,10 +18,9 @@ In the next example the TextBlock will be used to display the logs.
     Title="Logging example"
     mc:Ignorable="d">
     <DockPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" DockPanel.Dock="Bottom">
             <TextBlock
-                textblockLogging:TextblockLoggerBehavior.LoggerTarget="True"
-                DockPanel.Dock="Bottom" />
+                textblockLogging:TextblockLoggerBehavior.LoggerTarget="True" />
         </ScrollViewer>
     </DockPanel>
 </Window>
