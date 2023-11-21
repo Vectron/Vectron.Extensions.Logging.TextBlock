@@ -12,24 +12,14 @@
     Title="MainWindow"
     d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
     mc:Ignorable="d">
-    <DockPanel>
-        <GroupBox
-            Height="400"
-            DockPanel.Dock="Bottom"
-            Header="Log">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <i:Interaction.Behaviors>
-                    <vecbehv:ScrollViewerAutoScrollBehavior />
-                </i:Interaction.Behaviors>
-                <TextBlock>
-                    <i:Interaction.Behaviors>
-                        <veclogging:TextBlockLoggerBehavior />
-                    </i:Interaction.Behaviors>
-                </TextBlock>
-            </ScrollViewer>
-        </GroupBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
 
-        <StackPanel>
+        <StackPanel Grid.Row="0">
             <ComboBox ItemsSource="{Binding ApplicationThemes}" SelectedItem="{Binding SelectedApplicationTheme}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -59,5 +49,20 @@
 
             <Button Command="{Binding GenerateLogMessagesCommand}" Content="Generate messages" />
         </StackPanel>
-    </DockPanel>
+
+        <GridSplitter Grid.Row="1" />
+
+        <GroupBox Grid.Row="2" Header="Log">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <i:Interaction.Behaviors>
+                    <vecbehv:ScrollViewerAutoScrollBehavior />
+                </i:Interaction.Behaviors>
+                <TextBlock>
+                    <i:Interaction.Behaviors>
+                        <veclogging:TextBlockLoggerBehavior />
+                    </i:Interaction.Behaviors>
+                </TextBlock>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
 </mah:MetroWindow>
