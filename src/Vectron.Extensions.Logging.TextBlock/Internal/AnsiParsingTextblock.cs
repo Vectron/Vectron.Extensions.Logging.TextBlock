@@ -41,6 +41,11 @@ internal sealed class AnsiParsingTextBlock : ITextBlock
         var textString = text.ToString();
         textBlock.Dispatcher.Invoke(() =>
             {
+                if (textBlock.Inlines.Count > 0)
+                {
+                    lines = 0;
+                }
+
                 var (foregroundRed, foregroundGreen, foregroundBlue) = parsedStyle.ConvertForegroundColorToRGB();
                 var foregroundBrush = parsedStyle.HasForegroundColor
                     ? new SolidColorBrush(Color.FromRgb((byte)foregroundRed, (byte)foregroundGreen, (byte)foregroundBlue))
