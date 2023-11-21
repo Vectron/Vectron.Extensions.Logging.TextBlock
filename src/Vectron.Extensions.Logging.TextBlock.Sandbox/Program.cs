@@ -11,7 +11,7 @@ var settings = new List<KeyValuePair<string, string?>>
 {
     new("Logging:TextBlock:FormatterName", "Themed"),
     new("Logging:TextBlock:LogLevel:Default", "Trace"),
-    new("Logging:TextBlock:MaxMessages", "1000"),
+    new("Logging:TextBlock:MaxMessages", "50"),
     new("Logging:TextBlock:FormatterOptions:ColorWholeLine", "false"),
     new("Logging:TextBlock:FormatterOptions:Theme", "MEL"),
     new("Logging:TextBlock:FormatterOptions:IncludeScopes", "true"),
