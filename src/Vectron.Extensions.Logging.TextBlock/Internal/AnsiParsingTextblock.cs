@@ -11,6 +11,7 @@ internal sealed class AnsiParsingTextBlock : ITextBlock
 {
     private readonly AnsiParser parser;
     private readonly System.Windows.Controls.TextBlock textBlock;
+    private int lines;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AnsiParsingTextBlock"/> class.
@@ -58,9 +59,21 @@ internal sealed class AnsiParsingTextBlock : ITextBlock
 
                 textBlock.Inlines.Add(run);
 
-                if (textBlock.Inlines.Count > MaxMessages)
+                if (textString.EndsWith(Environment.NewLine, StringComparison.Ordinal))
                 {
+                    lines++;
+                }
+
+                while (lines > MaxMessages
+                    && textBlock.Inlines.Count > 0)
+                {
+                    var firstItem = textBlock.Inlines.FirstInline;
                     _ = textBlock.Inlines.Remove(textBlock.Inlines.FirstInline);
+                    if (firstItem is Run oldRun
+                        && oldRun.Text.EndsWith(Environment.NewLine, StringComparison.Ordinal))
+                    {
+                        lines--;
+                    }
                 }
             });
     }
