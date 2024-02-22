@@ -24,7 +24,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
     /// <param name="options">The <see cref="TextBlockLoggerOptions"/> monitor.</param>
     /// <param name="textBlockProvider">The <see cref="ITextBlockProvider"/>.</param>
     public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, ITextBlockProvider textBlockProvider)
-        : this(options, textBlockProvider, Array.Empty<TextBlockFormatter>())
+        : this(options, textBlockProvider, [])
     {
     }
 
