@@ -102,7 +102,7 @@ internal sealed class ThemedTextBlockFormatter : TextBlockFormatter, IDisposable
                     length = levelString.Length;
                 }
             }
-            catch
+            catch (ArgumentOutOfRangeException)
             {
             }
         }

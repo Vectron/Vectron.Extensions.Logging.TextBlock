@@ -197,6 +197,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeSmell", "ERP022:Unobserved exception in a generic exception handler", Justification = "We don't know what exception can be thrown")]
     private void WriteMessage(LogMessageEntry entry)
     {
         try
