@@ -1,4 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetPlatformIdentifier>windows</TargetPlatformIdentifier>
     <OutputType>Library</OutputType>
@@ -22,4 +23,5 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  
 </Project>
