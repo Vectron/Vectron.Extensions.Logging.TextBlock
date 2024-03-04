@@ -15,7 +15,7 @@ public class TextBlockFormatterOptions
     }
 
     /// <summary>
-    /// Gets or sets format string used to format timestamp in logging messages. Defaults to <c>null</c>.
+    /// Gets or sets format string used to format timestamp in logging messages. Defaults to <see langword="null"/>.
     /// </summary>
     public string? TimestampFormat
     {
@@ -25,7 +25,7 @@ public class TextBlockFormatterOptions
 
     /// <summary>
     /// Gets or sets a value indicating whether UTC time zone should be used to for timestamps in
-    /// logging messages. Defaults to <c>true</c>.
+    /// logging messages. Defaults to <see langword="true"/>.
     /// </summary>
     public bool UseUtcTimestamp
     {
