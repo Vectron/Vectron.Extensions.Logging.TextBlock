@@ -36,8 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vectron.Extensions.Logging.TextBlock", "src\Vectron.Extensions.Logging.TextBlock\Vectron.Extensions.Logging.TextBlock.csproj", "{E2DA416A-4D4E-477E-82CA-A0186B8ED02E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectron.Extensions.Logging.TextBlock.Sandbox", "src\Vectron.Extensions.Logging.TextBlock.Sandbox\Vectron.Extensions.Logging.TextBlock.Sandbox.csproj", "{6CA9FCE3-952F-42FC-82D3-A8EFF15D0B3A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,10 +46,6 @@ Global
 		{E2DA416A-4D4E-477E-82CA-A0186B8ED02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2DA416A-4D4E-477E-82CA-A0186B8ED02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2DA416A-4D4E-477E-82CA-A0186B8ED02E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CA9FCE3-952F-42FC-82D3-A8EFF15D0B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CA9FCE3-952F-42FC-82D3-A8EFF15D0B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CA9FCE3-952F-42FC-82D3-A8EFF15D0B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CA9FCE3-952F-42FC-82D3-A8EFF15D0B3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,7 +53,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7F887746-5101-49FF-9AE3-0D495A7A000E} = {FFE2A9F8-806B-4A91-A745-C5942AC33BD1}
 		{E2DA416A-4D4E-477E-82CA-A0186B8ED02E} = {88A7DBCB-DACF-4C70-A0CA-91701446A936}
-		{6CA9FCE3-952F-42FC-82D3-A8EFF15D0B3A} = {88A7DBCB-DACF-4C70-A0CA-91701446A936}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2803378F-B372-44D3-97A4-A98845514791}
