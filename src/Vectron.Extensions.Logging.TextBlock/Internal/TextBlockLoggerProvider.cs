@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Vectron.Extensions.Logging.TextBlock.Themes;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
@@ -55,7 +54,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
         if (options.CurrentValue.FormatterName == null
             || !formatters.TryGetValue(options.CurrentValue.FormatterName, out var logFormatter))
         {
-            logFormatter = formatters[TextBlockFormatterNames.Themed];
+            logFormatter = formatters[TextBlockFormatterNames.Simple];
         }
 
         return loggers.TryGetValue(name, out var logger)
@@ -86,7 +85,7 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
         if (options.FormatterName == null
             || !formatters.TryGetValue(options.FormatterName, out var logFormatter))
         {
-            logFormatter = formatters[TextBlockFormatterNames.Themed];
+            logFormatter = formatters[TextBlockFormatterNames.Simple];
         }
 
         messageQueue.FullMode = options.QueueFullMode;
@@ -114,46 +113,8 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
 
         if (!added)
         {
-            var formatterOptions = new ThemedTextBlockFormatterOptions();
-            var formatterOptionsMonitor = new FormatterOptionsMonitor<ThemedTextBlockFormatterOptions>(formatterOptions);
-            var themeProvider = new DefaultThemeProvider();
-            var formatter = new ThemedTextBlockFormatter(formatterOptionsMonitor, themeProvider);
-
-            _ = cd.TryAdd(TextBlockFormatterNames.Themed, formatter);
         }
 
         this.formatters = cd;
-    }
-
-    private sealed class DefaultThemeProvider : IThemeProvider
-    {
-        private readonly MELTheme currentTheme = new();
-
-        /// <inheritdoc/>
-        string ITheme.Name => string.Empty;
-
-        /// <inheritdoc/>
-        public string GetCategoryColor(string category) => currentTheme.GetCategoryColor(category);
-
-        /// <inheritdoc/>
-        public string GetEventIdColor(EventId eventId) => currentTheme.GetEventIdColor(eventId);
-
-        /// <inheritdoc/>
-        public string GetExceptionColor(Exception exception) => currentTheme.GetExceptionColor(exception);
-
-        /// <inheritdoc/>
-        public string GetLineColor(LogLevel logLevel) => currentTheme.GetLineColor(logLevel);
-
-        /// <inheritdoc/>
-        public string GetLogLevelColor(LogLevel logLevel) => currentTheme.GetLogLevelColor(logLevel);
-
-        /// <inheritdoc/>
-        public string GetMessageColor(string message) => currentTheme.GetMessageColor(message);
-
-        /// <inheritdoc/>
-        public string GetScopeColor(object? scope) => currentTheme.GetScopeColor(scope);
-
-        /// <inheritdoc/>
-        public string GetTimeColor(DateTimeOffset dateTimeOffset) => currentTheme.GetTimeColor(dateTimeOffset);
     }
 }
