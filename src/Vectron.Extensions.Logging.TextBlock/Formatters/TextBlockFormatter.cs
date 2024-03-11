@@ -2,7 +2,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Vectron.Extensions.Logging.TextBlock.Internal;
+namespace Vectron.Extensions.Logging.TextBlock.Formatters;
 
 /// <summary>
 /// Allows custom log messages formatting.

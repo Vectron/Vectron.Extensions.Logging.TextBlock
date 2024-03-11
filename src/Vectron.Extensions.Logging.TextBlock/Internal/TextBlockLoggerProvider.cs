@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Vectron.Extensions.Logging.TextBlock.Formatters;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
 

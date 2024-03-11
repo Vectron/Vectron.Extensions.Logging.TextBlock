@@ -1,6 +1,7 @@
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Vectron.Extensions.Logging.TextBlock.Formatters;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
 
