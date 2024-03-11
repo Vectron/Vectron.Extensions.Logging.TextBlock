@@ -47,7 +47,7 @@ public class TextBlockLoggerOptions
     }
 
     /// <summary>
-    /// Gets or sets the desired console logger behavior when the queue becomes full. Defaults to <c>Wait</c>.
+    /// Gets or sets the desired text block logger behavior when the queue becomes full. Defaults to <c>Wait</c>.
     /// </summary>
     public TextBlockLoggerQueueFullMode QueueFullMode
     {

@@ -14,7 +14,7 @@ namespace Vectron.Extensions.Logging.TextBlock.Formatters;
 public abstract class TextBlockFormatter(string name)
 {
     /// <summary>
-    /// Gets the name associated with the console log formatter.
+    /// Gets the name associated with the text block log formatter.
     /// </summary>
     public string Name { get; } = name ?? throw new ArgumentNullException(nameof(name));
 

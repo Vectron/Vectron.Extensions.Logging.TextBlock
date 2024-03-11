@@ -1,7 +1,7 @@
 namespace Vectron.Extensions.Logging.TextBlock;
 
 /// <summary>
-/// Determines the console logger behavior when the queue becomes full.
+/// Determines the text block logger behavior when the queue becomes full.
 /// </summary>
 public enum TextBlockLoggerQueueFullMode
 {
