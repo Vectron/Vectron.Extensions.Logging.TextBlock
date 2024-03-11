@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
+using Vectron.Extensions.Logging.TextBlock.Formatters;
 using Vectron.Extensions.Logging.TextBlock.Internal;
 
 namespace Vectron.Extensions.Logging.TextBlock;
