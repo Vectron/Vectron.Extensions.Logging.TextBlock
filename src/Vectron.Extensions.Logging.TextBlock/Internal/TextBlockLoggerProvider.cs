@@ -114,6 +114,11 @@ internal sealed class TextBlockLoggerProvider : ILoggerProvider, ISupportExterna
 
         if (!added)
         {
+            var formatterOptions = new SimpleTextBlockFormatterOptions();
+            var formatterOptionsMonitor = new FormatterOptionsMonitor<SimpleTextBlockFormatterOptions>(formatterOptions);
+            var formatter = new SimpleTextBlockFormatter(formatterOptionsMonitor);
+
+            _ = cd.TryAdd(TextBlockFormatterNames.Simple, formatter);
         }
 
         this.formatters = cd;

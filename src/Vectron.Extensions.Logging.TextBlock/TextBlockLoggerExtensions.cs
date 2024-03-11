@@ -15,6 +15,57 @@ namespace Vectron.Extensions.Logging.TextBlock;
 public static class TextBlockLoggerExtensions
 {
     /// <summary>
+    /// Add a console log formatter named 'json' to the factory with default properties.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
+    public static ILoggingBuilder AddJsonTextBlock(this ILoggingBuilder builder) =>
+        builder.AddFormatterWithName(TextBlockFormatterNames.Json);
+
+    /// <summary>
+    /// Add and configure a console log formatter named 'json' to the factory.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <param name="configure">A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in json log formatter.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
+    public static ILoggingBuilder AddJsonTextBlock(this ILoggingBuilder builder, Action<JsonTextBlockFormatterOptions> configure)
+        => builder.AddTextBlockWithFormatter(TextBlockFormatterNames.Json, configure);
+
+    /// <summary>
+    /// Add the default text block log formatter named 'simple' to the factory with default properties.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
+    public static ILoggingBuilder AddSimpleTextBlock(this ILoggingBuilder builder) =>
+        builder.AddFormatterWithName(TextBlockFormatterNames.Simple);
+
+    /// <summary>
+    /// Add and configure a console log formatter named 'simple' to the factory.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <param name="configure">A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in default log formatter.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
+    public static ILoggingBuilder AddSimpleTextBlock(this ILoggingBuilder builder, Action<SimpleTextBlockFormatterOptions> configure)
+        => builder.AddTextBlockWithFormatter(TextBlockFormatterNames.Simple, configure);
+
+    /// <summary>
+    /// Add and configure a console log formatter named 'systemd' to the factory.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <param name="configure">A delegate to configure the <see cref="TextBlockLogger"/> options for the built-in systemd log formatter.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
+    public static ILoggingBuilder AddSystemdTextBlock(this ILoggingBuilder builder, Action<TextBlockFormatterOptions> configure)
+        => builder.AddTextBlockWithFormatter(TextBlockFormatterNames.Systemd, configure);
+
+    /// <summary>
+    /// Add a console log formatter named 'systemd' to the factory with default properties.
+    /// </summary>
+    /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+    /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
+    public static ILoggingBuilder AddSystemdTextBlock(this ILoggingBuilder builder)
+        => builder.AddFormatterWithName(TextBlockFormatterNames.Systemd);
+
+    /// <summary>
     /// Adds a TextBlock logger named 'TextBlock' to the factory.
     /// </summary>
     /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
@@ -36,6 +87,11 @@ public static class TextBlockLoggerExtensions
     public static ILoggingBuilder AddTextBlock(this ILoggingBuilder builder)
     {
         builder.AddConfiguration();
+
+        _ = builder.AddTextBlockFormatter<JsonTextBlockFormatter, JsonTextBlockFormatterOptions>();
+        _ = builder.AddTextBlockFormatter<SystemdTextBlockFormatter, TextBlockFormatterOptions>();
+        _ = builder.AddTextBlockFormatter<SimpleTextBlockFormatter, SimpleTextBlockFormatterOptions>();
+
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, TextBlockLoggerProvider>());
         LoggerProviderOptions.RegisterProviderOptions<TextBlockLoggerOptions, TextBlockLoggerProvider>(builder.Services);
         _ = builder.Services.AddSingleton<ITextBlockProvider, TextBlockProvider>();
