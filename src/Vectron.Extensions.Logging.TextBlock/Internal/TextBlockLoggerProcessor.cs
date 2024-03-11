@@ -89,7 +89,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
 
         try
         {
-            _ = outputThread.Join(1500); // with timeout in-case Console is locked by user input
+            _ = outputThread.Join(1500); // with timeout in-case text block is locked by user input
         }
         catch (ThreadStateException)
         {

@@ -8,7 +8,6 @@ public enum LoggerColorBehavior
     /// <summary>
     /// Use the default color behavior, enabling color except.
     /// </summary>
-    /// <remarks>Enables color except when the console output is redirected.</remarks>
     Default,
 
     /// <summary>
