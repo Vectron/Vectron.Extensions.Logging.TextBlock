@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Windows.Threading;
 using Microsoft.Extensions.Options;
 
 namespace Vectron.Extensions.Logging.TextBlock.Internal;
@@ -28,7 +29,10 @@ internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
 
     /// <inheritdoc/>
     public void AddTextBlock(System.Windows.Controls.TextBlock textBlock)
-        => sinks.TryAdd(textBlock, new AnsiParsingTextBlock(textBlock, options.CurrentValue.MaxMessages));
+    {
+        _ = sinks.TryAdd(textBlock, new AnsiParsingTextBlock(textBlock, options.CurrentValue.MaxMessages));
+        textBlock.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+    }
 
     /// <inheritdoc/>
     public void Dispose()
@@ -36,7 +40,30 @@ internal sealed class TextBlockProvider : ITextBlockProvider, IDisposable
 
     /// <inheritdoc/>
     public void RemoveTextBlock(System.Windows.Controls.TextBlock textBlock)
-        => _ = sinks.TryRemove(textBlock, out _);
+    {
+        textBlock.Dispatcher.ShutdownStarted -= Dispatcher_ShutdownStarted;
+        _ = sinks.TryRemove(textBlock, out _);
+    }
+
+    private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+    {
+        if (sender is System.Windows.Controls.TextBlock textBlock)
+        {
+            RemoveTextBlock(textBlock);
+            return;
+        }
+
+        if (sender is Dispatcher dispatcher)
+        {
+            var sinksToRemove = sinks.Keys.Where(x => x.Dispatcher == dispatcher).ToArray();
+            foreach (var sink in sinksToRemove)
+            {
+                RemoveTextBlock(sink);
+            }
+
+            return;
+        }
+    }
 
     private void ReloadLoggerOptions(TextBlockLoggerOptions currentValue)
     {
