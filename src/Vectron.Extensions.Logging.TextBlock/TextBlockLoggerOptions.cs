@@ -12,8 +12,14 @@ public class TextBlockLoggerOptions
     /// </summary>
     internal const int DefaultMaxQueueLengthValue = 2500;
 
-    private int maxQueuedMessages = DefaultMaxQueueLengthValue;
-    private TextBlockLoggerQueueFullMode queueFullMode = TextBlockLoggerQueueFullMode.Wait;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextBlockLoggerOptions"/> class.
+    /// </summary>
+    public TextBlockLoggerOptions()
+    {
+        QueueFullMode = TextBlockLoggerQueueFullMode.Wait;
+        MaxQueueLength = DefaultMaxQueueLengthValue;
+    }
 
     /// <summary>
     /// Gets or sets the name of the log message formatter to use. Defaults to "simple" /&gt;.
@@ -34,7 +40,7 @@ public class TextBlockLoggerOptions
     /// </summary>
     public int MaxQueueLength
     {
-        get => maxQueuedMessages;
+        get;
         set
         {
             if (value <= 0)
@@ -42,7 +48,7 @@ public class TextBlockLoggerOptions
                 throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(MaxQueueLength)} must be larger than zero.");
             }
 
-            maxQueuedMessages = value;
+            field = value;
         }
     }
 
@@ -51,7 +57,7 @@ public class TextBlockLoggerOptions
     /// </summary>
     public TextBlockLoggerQueueFullMode QueueFullMode
     {
-        get => queueFullMode;
+        get;
         set
         {
             if (value is not TextBlockLoggerQueueFullMode.Wait and not TextBlockLoggerQueueFullMode.DropWrite)
@@ -59,7 +65,7 @@ public class TextBlockLoggerOptions
                 throw new ArgumentOutOfRangeException(nameof(value), $"{value} is not a supported queue mode value.");
             }
 
-            queueFullMode = value;
+            field = value;
         }
     }
 }
