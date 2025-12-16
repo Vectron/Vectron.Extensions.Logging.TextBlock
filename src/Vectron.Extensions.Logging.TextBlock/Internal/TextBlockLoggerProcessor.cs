@@ -11,9 +11,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
     private readonly Queue<LogMessageEntry> messageQueue;
     private readonly Thread outputThread;
     private readonly ITextBlockProvider textBlockProvider;
-    private TextBlockLoggerQueueFullMode fullMode = TextBlockLoggerQueueFullMode.Wait;
     private bool isAddingCompleted;
-    private int maxQueuedMessages = TextBlockLoggerOptions.DefaultMaxQueueLengthValue;
     private volatile int messagesDropped;
 
     /// <summary>
@@ -43,7 +41,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
     /// </summary>
     public TextBlockLoggerQueueFullMode FullMode
     {
-        get => fullMode;
+        get;
         set
         {
             if (value is not TextBlockLoggerQueueFullMode.Wait and not TextBlockLoggerQueueFullMode.DropWrite)
@@ -55,7 +53,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
             {
                 // _fullMode is used inside the lock and is safer to guard setter with lock as well
                 // this set is not expected to happen frequently
-                fullMode = value;
+                field = value;
                 Monitor.PulseAll(messageQueue);
             }
         }
@@ -66,7 +64,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
     /// </summary>
     public int MaxQueueLength
     {
-        get => maxQueuedMessages;
+        get;
         set
         {
             if (value <= 0)
@@ -76,7 +74,7 @@ internal sealed class TextBlockLoggerProcessor : IDisposable
 
             lock (messageQueue)
             {
-                maxQueuedMessages = value;
+                field = value;
                 Monitor.PulseAll(messageQueue);
             }
         }
