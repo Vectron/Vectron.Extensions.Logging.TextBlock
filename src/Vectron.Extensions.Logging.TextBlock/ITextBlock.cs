@@ -8,7 +8,7 @@ public interface ITextBlock
     /// <summary>
     /// Gets or sets the maximum number of messages.
     /// </summary>
-    int MaxMessages
+    public int MaxMessages
     {
         get;
         set;
@@ -18,5 +18,5 @@ public interface ITextBlock
     /// Write a message to the TextBlock.
     /// </summary>
     /// <param name="message">The message to write.</param>
-    void Write(string message);
+    public void Write(string message);
 }
