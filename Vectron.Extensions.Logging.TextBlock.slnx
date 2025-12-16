@@ -1,0 +1,30 @@
+<Solution>
+  <Folder Name="/.github/">
+    <File Path=".github/dependabot.yml" />
+  </Folder>
+
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/BuildTestDeploy.yml" />
+  </Folder>
+
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path=".runsettings" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.build.targets" />
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+    <File Path="version.json" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <Project Path="src/Vectron.Extensions.Logging.TextBlock/Vectron.Extensions.Logging.TextBlock.csproj" />
+  </Folder>
+
+  <Folder Name="/tests/">
+    <File Path="tests/.editorconfig" />
+    <File Path="tests/Directory.Build.props" />
+  </Folder>
+</Solution>
